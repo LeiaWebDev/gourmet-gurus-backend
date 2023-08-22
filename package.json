@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "seed": "node ./seed/User.seed.js"
+    "seed": "node ./seed/Workshop.seed.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
