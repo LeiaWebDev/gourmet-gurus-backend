@@ -28,7 +28,7 @@ const userSchema = new Schema(
     },
     photo: {
       type: String,
-      required: [true, "lastName is required."],
+      required: [true, "photo is required."],
     },
     bio: {
       type: String,
@@ -37,7 +37,7 @@ const userSchema = new Schema(
     role: {
       type: [String],
       enum: ["User", "Teacher"],
-      required: [true, "lastName is required."],
+      required: [true, "Role is required."],
       default: "User",
     },
     // workshopId: {

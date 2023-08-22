@@ -14,7 +14,8 @@ router.get("/", (req, res, next) => {
 router.get("/workshops", (req, res, next) => {
   Workshop.find()
     .populate('teacherId')
-    .then((documents) => res.json(documents));
+    .then((documents) => res.json(documents))
+    .catch((e) => (next(e)))
 });
 router.use("/users", require("./users.routes"));
 router.use("/teachers", require("./teachers.routes"));
