@@ -1,6 +1,5 @@
 const { Schema, model, SchemaType } = require("mongoose");
 
-
 const workshopSchema = new Schema(
   {
     title: {
@@ -15,7 +14,13 @@ const workshopSchema = new Schema(
     },
     subCategory: {
       type: [String],
-      enum: ["Japanese Cuisine", "French Cuisine", "South American Cuisine", "Chinese Cuisine", "Italian Cuisine"],
+      enum: [
+        "Japanese Cuisine",
+        "French Cuisine",
+        "South American Cuisine",
+        "Chinese Cuisine",
+        "Italian Cuisine",
+      ],
       required: [true, "Sub-category is required."],
     },
     duration: {
@@ -29,7 +34,7 @@ const workshopSchema = new Schema(
     },
     maxParticipants: {
       type: Number,
-      min: 2, 
+      min: 2,
       max: 10,
       required: [true, "maximum participants is required."],
     },
@@ -40,26 +45,23 @@ const workshopSchema = new Schema(
     workshopPics: {
       type: [String],
       required: [true, "at least one picture of the workshop is required."],
-      
     },
     location: {
-        type: String,
-        required: [true, "location/address of the workshop is required."],
-      },
+      type: String,
+      required: [true, "location/address of the workshop is required."],
+    },
     preRequisites: {
-        type: String,
-        default: ""
-        
+      type: String,
+      default: "",
     },
     workshopMaterial: {
-        type: String,
-        default: "" 
+      type: String,
+      default: "",
     },
     price: {
-        type: Number,
-        required: [true, "price of the workshop is required."],
-        
-      },
+      type: Number,
+      required: [true, "price of the workshop is required."],
+    },
     teacherId: {
       type: Schema.Types.ObjectId,
       ref: "User",
@@ -71,10 +73,9 @@ const workshopSchema = new Schema(
     //   ref: "User"
     // },
     sessionsAvailable: {
-        type: [Date],
-        required: [true, "at least one session for this workshop is required."],
-      },
-    
+      type: [Date],
+      required: [true, "at least one session for this workshop is required."],
+    },
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
