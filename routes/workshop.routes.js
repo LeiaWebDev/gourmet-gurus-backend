@@ -15,7 +15,7 @@ router.get("/", async (req, res, next) => {
 
 
 // Get one workshop
-router.get(/)
+// router.get
 
 //POST
 

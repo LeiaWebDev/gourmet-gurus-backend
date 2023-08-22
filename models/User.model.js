@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model, SchemaType } = require("mongoose");
 
 // TODO: Please make sure you edit the User model to whatever makes sense in this case
 const userSchema = new Schema(
@@ -14,10 +14,47 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Password is required."],
     },
-    name: {
+    firstName: {
       type: String,
-      required: [true, "Name is required."],
+      required: [true, "firstName is required."],
     },
+    lastName: {
+      type: String,
+      required: [true, "lastName is required."],
+    },
+    phone: {
+      type: Number,
+      required: [true, "phone is required."],
+    },
+    photo: {
+      type: String,
+      required: [true, "lastName is required."],
+    },
+    bio: {
+      type: String,
+      
+    },
+    role: {
+      type: [String],
+      enum: ["User", "Teacher"],
+      required: [true, "lastName is required."],
+      default: "User",
+    },
+    // workshopId: {
+    //   type: Number,
+    //   ref: "Workshop"
+    // },
+    // bookingId: {
+    //   type: Number,
+    //   ref: "Booking"
+    // },
+    // favorites: {
+    //   type: [String],
+    //   ref: "Favorites"
+    // },
+    
+    
+
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
