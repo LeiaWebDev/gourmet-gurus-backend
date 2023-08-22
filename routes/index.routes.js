@@ -13,7 +13,7 @@ router.get("/", (req, res, next) => {
 //seeding
 router.get("/workshops", (req, res, next) => {
   Workshop.find()
-    .populate(teacherId)
+    .populate('teacherId')
     .then((documents) => res.json(documents));
 });
 router.use("/users", require("./users.routes"));
