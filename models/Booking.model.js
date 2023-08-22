@@ -9,41 +9,33 @@ const bookingSchema = new Schema(
       unique: true,
     },
     status: {
-      type: [String],
+      type: String,
+      enum: ["Confirmed", "Pending", "Cancelled"],
       required: [true, "status of the booking is required."],
     },
     cancellation: {
-      type: [String],
-      enum: ["Free cancellation 48 h before session date", "No refund after purchase"],
+      type: String,
+      enum: [
+        "Free cancellation 48h before session date",
+        "No refund after purchase",
+      ],
       required: [true, "cancellation policy is required."],
     },
     quantity: {
       type: Number,
-      required: [true, "please choose a quantity of workshop."],
+      default: 1,
     },
-    
+
     workshopId: {
       type: Schema.Types.ObjectId,
       ref: "Workshop",
       required: true,
-
     },
     userId: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    // workshopPrice: {
-    //     type: Number,
-    //     ref: "Workshop"
-    //   },
-    // favorites: {
-    //   type: [String],
-    //   ref: "Favorites"
-    // },
-    
-    
-
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
