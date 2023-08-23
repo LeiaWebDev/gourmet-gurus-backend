@@ -56,6 +56,16 @@ const users = [
     bio: "I am a vegetarian master chef.",
     role: "Teacher",
   },
+  {
+    email: "leia@gg.com",
+    password: hashedPassword,
+    firstName: "Leia",
+    lastName: "T",
+    phone: "0909080809",
+    photo: "https://ca.slack-edge.com/T05DVHKST3P-U05EPUNML9J-d0aa0e84a83b-192",
+    bio: "Eager to learn a new baking skill",
+    role: "Student",
+  },
 ];
 
 const bookings = [
@@ -87,7 +97,7 @@ async function seed() {
     for (let workshop of createdWorkshop) {
       const foundUser = createdUser.find((user) => user.role === "Teacher");
       workshop.teacherId = foundUser._id;
-      console.log(`assigned teacher Id ${foundUser._id} to workshop ${workshop.title}`)
+      console.log(workshop.teacherId);
     }
     console.log("completed data population")
   } catch (error) {
