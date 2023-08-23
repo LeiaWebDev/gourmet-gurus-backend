@@ -255,39 +255,34 @@ const bookings = [
     status: "Confirmed",
     cancellation: "No refund after purchase",
     quantity: 1,
-    workshopId: "64e616634b7ec54f427c2a08",
-    userId: "64e5db363443976770e4e5c7",
+    workshopId: "20 Rue Maillard",
+    userId: "lily@gg.com",
   },
   {
     session: new Date("2023-08-27T15:00:00"),
     status: "Confirmed",
     cancellation: "No refund after purchase",
     quantity: 1,
-    workshopId: "64e5cfb743ea439968043400",
-    userId: "64e5cfb743ea4399680433f7",
+    workshopId: "9 Rue Fourchette",
+    userId: "angel@gg.com",
   },
   {
     session: new Date("2023-08-26T17:00:00"),
     status: "Confirmed",
     cancellation: "No refund after purchase",
     quantity: 1,
-    workshopId: "64e5da942da902d69c3d023b",
-    userId: "64e5da942da902d69c3d0223",
+    workshopId: "12 Rue Lorem Ipsum",
+    userId: "leia@gg.com",
   },
 ];
 
 async function seed() {
   try {
-    console.log("starting data seeding");
     await User.deleteMany();
     await Workshop.deleteMany();
     await Booking.deleteMany();
 
-    console.log("cleared existing data");
-
     const createdUser = await User.create(users);
-
-    console.log("inserted new data");
 
     for (let workshop of workshops) {
       const foundUser = await User.findOne({ email: workshop.teacherId });
@@ -295,10 +290,24 @@ async function seed() {
       console.log(workshop.teacherId);
     }
     const createdWorkshop = await Workshop.create(workshops);
-    const createdBookings = await Booking.create(bookings);
 
-    
+    for (let booking of bookings) {
+      const foundWorkshop = await Workshop.findOne({
+        address: booking.workshopId,
+      });
+      booking.workshopId = foundWorkshop._id;
+      console.log(booking.workshopId);
+    }
+    const createdBookings = await Booking.create(bookings);
     console.log("Bookings created", createdBookings);
+    for (let booking of bookings) {
+      const foundUser = await User.findOne({
+        email: booking.userId,
+      });
+      booking.workshopId = foundWorkshop._id;
+      console.log(booking.workshopId);
+    }
+
   } catch (error) {
     console.error("error during data population", error);
   } finally {
