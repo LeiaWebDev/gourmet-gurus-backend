@@ -35,7 +35,7 @@ router.get("/:bookingId", async(req, res, next)=>{
 })
 
 // route to get one booking with workshop details
-router.get("/:bookingId/workshopdetails", async(req, res, next)=>{
+router.get("/:bookingId/bookingdetails", async(req, res, next)=>{
     
     try {
         const booking = await Booking.findById(req.params.bookingId)
@@ -44,7 +44,9 @@ router.get("/:bookingId/workshopdetails", async(req, res, next)=>{
         }
         const oneBookingDetails = await Booking.findById(booking)
         .populate("workshopId")
+        .populate("userId")
         res.json(oneBookingDetails)
+
     } catch (error) {
         next(error)
     }
