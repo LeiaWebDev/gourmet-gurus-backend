@@ -28,7 +28,7 @@ router.get("/:bookingId", async(req, res, next)=>{
     
     try {
         const oneBooking = await Booking.findById(req.params.bookingId)
-        res.json(oneBooking)
+        res.json(oneBooking).populate({_id:0})
     } catch (error) {
         next(error)
     }

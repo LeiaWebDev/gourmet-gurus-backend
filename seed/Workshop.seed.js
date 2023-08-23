@@ -296,6 +296,7 @@ async function seed() {
     }
     const createdWorkshop = await Workshop.create(workshops);
     const createdBookings = await Booking.create(bookings);
+    
     console.log("Bookings created", createdBookings);
   } catch (error) {
     console.error("error during data population", error);
