@@ -20,6 +20,19 @@ router.get("/", async(req, res, next)=>{
     }
 })
 
+// route to get all teachers
+
+router.get("/teachers", async(req, res, next)=>{
+    console.log("View all teachers")
+    try {
+        // const allTeachers = await User.find({role:"Teacher"})
+        const allTeachers = await User.find({role: "Teacher"})
+        res.json(allTeachers)
+    } catch (error) {
+        next(error)
+    }
+})
+
 // route to get one user
 router.get("/:userId", async(req, res, next)=>{
     
@@ -58,18 +71,6 @@ router.put("/:userId", async(req, res, next)=>{
 })
 
 
-// route to get all teachers
-
-router.get("/teachers", async(req, res, next)=>{
-    console.log("View all teachers")
-    try {
-        // const allTeachers = await User.find({role:"Teacher"})
-        const allTeachers = await User.find({role: "Teacher"})
-        res.json(allTeachers)
-    } catch (error) {
-        next(error)
-    }
-})
 
 
 // route to get one teacher
