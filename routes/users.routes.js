@@ -37,7 +37,7 @@ router.get("/teachers", async(req, res, next)=>{
     console.log("View all teachers")
     try {
         // const allTeachers = await User.find({role:"Teacher"})
-        const allTeachers = await User.find((user)=> user.role === "Teacher")
+        const allTeachers = await User.find({role: "Teacher"})
         res.json(allTeachers)
     } catch (error) {
         next(error)
@@ -49,7 +49,11 @@ router.get("/teachers", async(req, res, next)=>{
 router.get("/teachers/:userId", async(req, res, next)=>{
     
     try {
-        const oneTeacher = await allTeachers.findById(req.params.userId)
+        const oneTeacher = await User.findById({_id: req.params.userId, role: "Teacher" })
+        
+        if(!teacher){
+            return res.status(404).json({message:"Teacher not found"})
+        }
         res.json(oneTeacher)
     } catch (error) {
         next(error)
@@ -62,7 +66,12 @@ router.get("/teachers/:userId", async(req, res, next)=>{
 router.delete("/teachers/:userId", async(req, res, next)=>{
     const id = req.params.userId
     try {
-        await allTeachers.findByIdAndDelete(id)
+        const deletedTeacher = await User.findByIdAndDelete({_id: id, role: "Teacher"})
+        
+        if (!deletedTeacher){
+            return res.status(404).json({message: "Teacher not found"})
+        }
+        
         res.sendStatus(204);
         // res.json({message: `teacher ${id} was deleted`})
     } catch (error) {
