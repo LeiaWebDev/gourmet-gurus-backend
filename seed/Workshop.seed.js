@@ -106,43 +106,43 @@ const users = [
     phone: "0909080809",
     photo: "https://ca.slack-edge.com/T05DVHKST3P-U05EPUNML9J-d0aa0e84a83b-192",
     bio: "Eager to learn a new baking skill",
-    role: "Student",
+    role: "User",
   },
 ];
 
-const bookings = [
-  {
-    session: 8 / 9 / 23,
-    status: "Confirmed",
-    cancellation: "No refund after purchase",
-    quantity: 1,
-    workshopId: 80000,
-    userId: "616c4b4c649eaa001dd50f82",
-  },
-];
+// const bookings = [
+//   {
+//     session: 8 / 9 / 23,
+//     status: "Confirmed",
+//     cancellation: "No refund after purchase",
+//     quantity: 1,
+//     workshopId: 80000,
+//     userId: "616c4b4c649eaa001dd50f82",
+//   },
+// ];
 
 async function seed() {
   try {
-    console.log("starting data seeding")
+    console.log("starting data seeding");
     await User.deleteMany();
     await Workshop.deleteMany();
     // await Booking.deleteMany();
 
-    console.log("cleared existing data")
+    console.log("cleared existing data");
 
     const createdUser = await User.create(users);
 
-    const createdWorkshop = await Workshop.create(workshops);
-    const createdBooking = await Booking.create(bookings);
+    // const createdBooking = await Booking.create(bookings);
 
-    console.log("inserted new data")
-
-    for (let workshop of createdWorkshop) {
-      const foundUser = await User.findOne({ teacherId: workshop.teacherId })
-			workshop.teacherId = foundUser._id
-      console.log(workshop.teacherId);
+    console.log("inserted new data");
+    
+    for (let workshop of workshops) {
+        const foundUser = await User.findOne({ email: workshop.teacherId });
+        workshop.teacherId = foundUser._id;
+        console.log(workshop.teacherId);
     }
-    console.log("completed data population")
+    const createdWorkshop = await Workshop.create(workshops);
+    console.log("completed data population");
   } catch (error) {
     console.error("error during data population", error);
   } finally {
