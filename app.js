@@ -18,7 +18,7 @@ const cookieParser = require("cookie-parser")
 const helmet = require("helmet")
 const rateLimiter = require("express-rate-limit")
 const jwt = require("jsonwebtoken")
-const { errorHandler, notFound } = require("./error-handling/index")
+const { errorHandler, notFoundHandler } = require("./error-handling/index")
 const User = require("./models/User.model")
 const PORT = 5005
 
@@ -78,7 +78,7 @@ app.use("/auth", authRoutes);
 
 
 // Import the custom error handling middleware
-const {errorHandler, notFoundHandler} = require("./error-handling")
+// const {errorHandler, notFoundHandler} = require("./error-handling")
 
 //Set up custom error handling middleware
 app.use(errorHandler)

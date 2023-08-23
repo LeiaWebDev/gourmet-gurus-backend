@@ -30,12 +30,12 @@ async function isAuthenticated(req,res,next){
 
 
 // Instantiate the JWT token validation middleware
-const isAuthenticated = jwt({
-  secret: process.env.TOKEN_SECRET,
-  algorithms: ["HS256"],
-  requestProperty: "payload",
-  getToken: getTokenFromHeaders,
-});
+// const isAuthenticated = jwt({
+//   secret: process.env.TOKEN_SECRET,
+//   algorithms: ["HS256"],
+//   requestProperty: "payload",
+//   getToken: getTokenFromHeaders,
+// });
 
 // Function used to extract the JWT token from the request's 'Authorization' Headers
 // function getTokenFromHeaders(req) {
