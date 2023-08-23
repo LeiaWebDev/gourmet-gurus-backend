@@ -255,8 +255,8 @@ const bookings = [
     status: "Confirmed",
     cancellation: "No refund after purchase",
     quantity: 1,
-    workshopId: "64e5cfb743ea439968043401",
-    userId: "64e5cfb743ea4399680433f6",
+    workshopId: "64e616634b7ec54f427c2a08",
+    userId: "64e5db363443976770e4e5c7",
   },
   {
     session: new Date("2023-08-27T15:00:00"),
