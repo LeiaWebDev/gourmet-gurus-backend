@@ -28,7 +28,23 @@ router.get("/:bookingId", async(req, res, next)=>{
     
     try {
         const oneBooking = await Booking.findById(req.params.bookingId)
-        res.json(oneBooking).populate({_id:0})
+        res.json(oneBooking)
+    } catch (error) {
+        next(error)
+    }
+})
+
+// route to get one booking with workshop details
+router.get("/:bookingId/workshopdetails", async(req, res, next)=>{
+    
+    try {
+        const booking = await Booking.findById(req.params.bookingId)
+        if(!booking){
+            return res.status(404).json({message: "Booking not found"})
+        }
+        const oneBookingDetails = await Booking.findById(booking)
+        .populate("workshopId")
+        res.json(oneBookingDetails)
     } catch (error) {
         next(error)
     }
