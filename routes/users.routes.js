@@ -31,6 +31,33 @@ router.get("/:userId", async(req, res, next)=>{
     }
 })
 
+
+// route to create a new user
+router.post('/', async(req, res, next)=>{
+    try {
+        const {firstName, lastName, email, password, phone, photo, bio, role} = req.body
+        const createdUser = await User.create(req.body)
+        res.status(201).json(createdUser)
+
+	} catch (error) {
+		next(error);
+	}
+})
+
+
+// route for one user to update their profile
+router.put("/:userId", async(req, res, next)=>{
+    try {
+        const {firstName, lastName, email, password, phone, photo, bio, role} = req.body 
+        const id = req.params.userId
+        const createdUserDetails = await User.findByIdAndUpdate(id, req.body, {new: true})
+        res.json(createdUserDetails)
+    } catch (error) {
+        next(error)
+    }
+})
+
+
 // route to get all teachers
 
 router.get("/teachers", async(req, res, next)=>{
