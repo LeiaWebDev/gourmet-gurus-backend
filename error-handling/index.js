@@ -14,7 +14,7 @@ if (error.name === "ValidationError") {
 
     // If not, send a response with status code 500 and a generic error message
     res
-      .status(status)
+      .status(500)
       .json({ message: error.message, error: error.name});
   }
 };

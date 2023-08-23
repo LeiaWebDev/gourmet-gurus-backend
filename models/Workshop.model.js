@@ -1,4 +1,5 @@
 const { Schema, model, SchemaType } = require("mongoose");
+
 const workshopSchema = new Schema(
   {
     title: {
