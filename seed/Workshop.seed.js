@@ -110,23 +110,23 @@ const users = [
   },
 ];
 
-// const bookings = [
-//   {
-//     session: 8 / 9 / 23,
-//     status: "Confirmed",
-//     cancellation: "No refund after purchase",
-//     quantity: 1,
-//     workshopId: 80000,
-//     userId: "616c4b4c649eaa001dd50f82",
-//   },
-// ];
+const bookings = [
+  {
+    session: new Date("2023-08-09"),
+    status: "Confirmed",
+    cancellation: "No refund after purchase",
+    quantity: 1,
+    workshopId: "",
+    userId: "leia@gg.com",
+  },
+];
 
 async function seed() {
   try {
     console.log("starting data seeding");
     await User.deleteMany();
     await Workshop.deleteMany();
-    // await Booking.deleteMany();
+    await Booking.deleteMany();
 
     console.log("cleared existing data");
 
@@ -142,6 +142,7 @@ async function seed() {
         console.log(workshop.teacherId);
     }
     const createdWorkshop = await Workshop.create(workshops);
+    
     console.log("completed data population");
   } catch (error) {
     console.error("error during data population", error);
