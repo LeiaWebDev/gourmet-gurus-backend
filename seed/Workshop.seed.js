@@ -293,21 +293,19 @@ async function seed() {
 
     for (let booking of bookings) {
       const foundWorkshop = await Workshop.findOne({
-        address: booking.workshopId,
+        location: booking.workshopId,
       });
       booking.workshopId = foundWorkshop._id;
       console.log(booking.workshopId);
     }
-    const createdBookings = await Booking.create(bookings);
-    console.log("Bookings created", createdBookings);
     for (let booking of bookings) {
       const foundUser = await User.findOne({
         email: booking.userId,
       });
-      booking.workshopId = foundWorkshop._id;
-      console.log(booking.workshopId);
+      booking.userId = foundUser._id;
+      console.log(booking.userId);
     }
-
+    const createdBookings = await Booking.create(bookings);
   } catch (error) {
     console.error("error during data population", error);
   } finally {
