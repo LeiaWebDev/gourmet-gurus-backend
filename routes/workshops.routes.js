@@ -1,6 +1,7 @@
 const express = require("express");
 const Workshop = require("../models/Workshop.model");
 const router = express.Router();
+const {isTeacher} = require("../middleware/jwt.middleware")
 
 //GET ALL WORKSHOPS
 

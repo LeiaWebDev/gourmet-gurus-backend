@@ -18,7 +18,6 @@ router.get("/workshops", (req, res, next) => {
     .catch((e) => (next(e)))
 });
 router.use("/users", require("./users.routes"));
-router.use("/teachers", require("./teachers.routes"));
 router.use("/workshops", require("./workshops.routes"));
 router.use("/bookings", require("./bookings.routes"));
 
