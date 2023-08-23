@@ -25,7 +25,7 @@ const workshops = [
     location: "3 Rue Maillard",
     workshopMaterial: "Spoon",
     price: 20,
-    teacherId: "64e4fcff136ef569cc28244d",
+    teacherId: "helen@gg.com",
     sessionsAvailable: new Date("2023-08-09"),
   },
   {
@@ -44,7 +44,7 @@ const workshops = [
     location: "3 Rue Maillard",
     workshopMaterial: "Knife",
     price: 20,
-    teacherId: "64e4fcff136ef569cc28244e",
+    teacherId: "helen@gg.com",
     sessionsAvailable: new Date("2023-08-09"),
   },
   {
@@ -63,7 +63,7 @@ const workshops = [
     location: "3 Rue Maillard",
     workshopMaterial: "Fork",
     price: 20,
-    teacherId: "64e4fcff136ef569cc28244f",
+    teacherId: "florian@gg.com",
     sessionsAvailable: new Date("2023-08-09"),
   },
 ];
@@ -126,15 +126,16 @@ async function seed() {
   try {
     await User.deleteMany();
     await Workshop.deleteMany();
-    await Booking.deleteMany();
+    // await Booking.deleteMany();
 
     const createdUser = await User.create(users);
+
     const createdWorkshop = await Workshop.create(workshops);
     // const createdBooking = await Booking.create(bookings);
 
     for (let workshop of createdWorkshop) {
-      const foundUser = createdUser.find((user) => user.role === "Teacher");
-      workshop.teacherId = foundUser._id;
+      const foundUser = await User.findOne({ teacherId: workshop.teacherId })
+			workshop.teacherId = foundUser._id
       console.log(workshop.teacherId);
     }
   } catch (error) {
