@@ -87,8 +87,8 @@ app.use(notFoundHandler)
 
 
 // START SERVER
-app.listen(PORT, () => {
-	console.log(`Server listening on port ${PORT}`)
-})
+// app.listen(PORT, () => {
+// 	console.log(`Server listening on port ${PORT}`)
+// })
 
 module.exports = app;

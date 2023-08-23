@@ -55,6 +55,7 @@ async function isAuthenticated(req,res,next){
 
 function isTeacher (req, res, next){
   if (req.user.role === "Teacher"){
+    // if (req.user.role === "Teacher"){
       next()
   } else{
       return res.status(401).json({message: "Unauthorized"})
@@ -65,7 +66,7 @@ function isTeacher (req, res, next){
 //   if (req.user.role === "Admin"){
 //       next()
 //   } else{
-//       return res.status(401).json({message: xxxxxx})
+//       return res.status(401).json({message: "Unauthorized"})
 //   }
 // }
 
