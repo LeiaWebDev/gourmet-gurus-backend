@@ -99,6 +99,16 @@ const users = [
     bio: "Pizza champion.",
     role: "Teacher",
   },
+  {
+    email: "leia@gg.com",
+    password: hashedPassword,
+    firstName: "Leia",
+    lastName: "T",
+    phone: "0909080809",
+    photo: "https://ca.slack-edge.com/T05DVHKST3P-U05EPUNML9J-d0aa0e84a83b-192",
+    bio: "Eager to learn a new baking skill",
+    role: "Student",
+  },
 ];
 
 // const bookings = [
@@ -124,7 +134,7 @@ async function seed() {
 
     for (let workshop of createdWorkshop) {
       const foundUser = createdUser.find((user) => user.role === "Teacher");
-      workshop.teacherId = foundUser.id;
+      workshop.teacherId = foundUser._id;
       console.log(workshop.teacherId);
     }
   } catch (error) {
