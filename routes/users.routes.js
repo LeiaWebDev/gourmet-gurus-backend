@@ -10,7 +10,7 @@ const Booking = require("../models/Booking.model")
 
 
 // route to get all users, 
-router.get("/users", async(req, res, next)=>{
+router.get("/", async(req, res, next)=>{
     console.log("View all the users")
     try {
         const allUsers = await User.find()
@@ -20,19 +20,8 @@ router.get("/users", async(req, res, next)=>{
     }
 })
 
-// route to get all teachers
-router.get("/teachers", async(req, res, next)=>{
-    console.log("View all teachers")
-    try {
-        const allTeachers = await User.find({role:"Teacher"})
-        res.json(allTeachers)
-    } catch (error) {
-        next(error)
-    }
-})
-
 // route to get one user
-router.get("/users/:userId", async(req, res, next)=>{
+router.get("/:userId", async(req, res, next)=>{
     
     try {
         const oneUser = await User.findById(req.params.userId)
@@ -41,6 +30,20 @@ router.get("/users/:userId", async(req, res, next)=>{
         next(error)
     }
 })
+
+// route to get all teachers
+
+router.get("/teachers", async(req, res, next)=>{
+    console.log("View all teachers")
+    try {
+        // const allTeachers = await User.find({role:"Teacher"})
+        const allTeachers = await User.find((user)=> user.role === "Teacher")
+        res.json(allTeachers)
+    } catch (error) {
+        next(error)
+    }
+})
+
 
 // route to get one teacher
 router.get("/teachers/:userId", async(req, res, next)=>{
@@ -54,18 +57,18 @@ router.get("/teachers/:userId", async(req, res, next)=>{
 })
 
 
+
 // delete a teacher with specifid Id
-router.get("/teachers/:userId", async(req, res, next)=>{
+router.delete("/teachers/:userId", async(req, res, next)=>{
     const id = req.params.userId
     try {
         await allTeachers.findByIdAndDelete(id)
-        res.json({message: `teacher ${id} was deleted`})
+        res.sendStatus(204);
+        // res.json({message: `teacher ${id} was deleted`})
     } catch (error) {
         next(error)
     }
 })
-
-
 
 
 

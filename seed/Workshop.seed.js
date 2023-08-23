@@ -1,5 +1,4 @@
 require("dotenv").config();
-
 require("../db/index");
 
 const Workshop = require("../models/Workshop.model");
@@ -48,7 +47,7 @@ const workshops = [
     sessionsAvailable: new Date("2023-08-09"),
   },
   {
-    title: "Pizza making class",
+    title: "Pizza",
     category: "Cooking",
     subCategory: "Italian Cuisine",
     duration: "1h",
@@ -86,7 +85,7 @@ const users = [
     lastName: "Korlugen",
     phone: "0909080809",
     photo: "https://ca.slack-edge.com/T05DVHKST3P-U05EPUNML9J-d0aa0e84a83b-192",
-    bio: "Croissant queen.",
+    bio: "I am a vegetarian master chef.",
     role: "Teacher",
   },
   {
@@ -96,7 +95,7 @@ const users = [
     lastName: "Cutraro",
     phone: "0909080809",
     photo: "https://ca.slack-edge.com/T05DVHKST3P-U05EPUNML9J-d0aa0e84a83b-192",
-    bio: "Pizza champion.",
+    bio: "I am a vegetarian master chef.",
     role: "Teacher",
   },
   {
@@ -111,35 +110,41 @@ const users = [
   },
 ];
 
-// const bookings = [
-//   {
-//     session: "2023-08-09",
-//     status: "Confirmed",
-//     cancellation: "No refund after purchase",
-//     quantity: 1,
-//     workshopId: createdWorkshops[0]._id,
-//     userId: createdUsers[0]._id,
-//   },
-// ];
+const bookings = [
+  {
+    session: 8 / 9 / 23,
+    status: "Confirmed",
+    cancellation: "No refund after purchase",
+    quantity: 1,
+    workshopId: 80000,
+    userId: "616c4b4c649eaa001dd50f82",
+  },
+];
 
 async function seed() {
   try {
+    console.log("starting data seeding")
     await User.deleteMany();
     await Workshop.deleteMany();
     // await Booking.deleteMany();
 
+    console.log("cleared existing data")
+
     const createdUser = await User.create(users);
 
     const createdWorkshop = await Workshop.create(workshops);
-    // const createdBooking = await Booking.create(bookings);
+    const createdBooking = await Booking.create(bookings);
+
+    console.log("inserted new data")
 
     for (let workshop of createdWorkshop) {
       const foundUser = await User.findOne({ teacherId: workshop.teacherId })
 			workshop.teacherId = foundUser._id
       console.log(workshop.teacherId);
     }
+    console.log("completed data population")
   } catch (error) {
-    console.log(error);
+    console.error("error during data population", error);
   } finally {
     process.exit();
   }
