@@ -7,6 +7,13 @@ const Booking = require("../models/Booking.model");
 const bcrypt = require("bcrypt");
 let password = "1234";
 const hashedPassword = bcrypt.hashSync(password, 10);
+const dateFormatter = new Intl.DateTimeFormat("en-US", {
+  dateStyle: "full",
+  timeStyle: "short",
+});
+
+
+
 const workshops = [
   {
     title: "Traditional Japanese Ramen",
@@ -26,7 +33,7 @@ const workshops = [
     workshopMaterial: "Chopsticks & Spoons",
     price: 20,
     teacherId: "helen@gg.com",
-    sessionsAvailable: new Date("2023-08-09"),
+    sessionsAvailable: new Date("2023-08-29"),
   },
   {
     title: "French Macarons",
@@ -45,7 +52,7 @@ const workshops = [
     workshopMaterial: "Spatula",
     price: 20,
     teacherId: "helen@gg.com",
-    sessionsAvailable: new Date("2023-08-09"),
+    sessionsAvailable: new Date("2023-08-29"),
   },
   {
     title: "Pizza",
@@ -64,7 +71,7 @@ const workshops = [
     workshopMaterial: "Fork",
     price: 20,
     teacherId: "peppe@gg.com",
-    sessionsAvailable: new Date("2023-08-09"),
+    sessionsAvailable: new Date("2023-08-29"),
   },
   {
     title: "Gyoza from scratch",
@@ -83,7 +90,7 @@ const workshops = [
     workshopMaterial: "Chopsticks",
     price: 20,
     teacherId: "coco@gg.com",
-    sessionsAvailable: new Date("2023-08-30"),
+    sessionsAvailable: new Date("2023-08-29"),
   },
   {
     title: "Making some Colorful and delicious Mochi",
@@ -103,7 +110,7 @@ const workshops = [
     workshopMaterial: "Just yourself",
     price: 25,
     teacherId: "coco@gg.com",
-    sessionsAvailable: new Date("2023-08-29"),
+    sessionsAvailable: new Date("2023-09-05"),
   },
   {
     title: "Fresh Italian Pasta from scratch",
@@ -120,7 +127,7 @@ const workshops = [
     workshopMaterial: "Nothing",
     price: 20,
     teacherId: "carluccio@gg.com",
-    sessionsAvailable: new Date("2023-08-09"),
+    sessionsAvailable: new Date("2023-09-21"),
   },
   {
     title: "Chocalate creation",
@@ -138,7 +145,7 @@ const workshops = [
     workshopMaterial: "Nothing",
     price: 10,
     teacherId: "cyril@gg.com",
-    sessionsAvailable: new Date("2023-08-29"),
+    sessionsAvailable: new Date("2023-09-04T15:00:00"),
   },
 ];
 
@@ -247,11 +254,32 @@ const users = [
     bio: "One of the best chefs in France",
     role: "Teacher",
   },
+  {
+    email: "nico@gg.com",
+    password: hashedPassword,
+    firstName: "Nico",
+    lastName: "M",
+    phone: "09928323008",
+    photo: "https://www.refinery29.com/images/10231884.jpg?crop=40%3A21",
+    bio: "I like to eat",
+    role: "User",
+  },
+  {
+    email: "dora@gg.com",
+    password: hashedPassword,
+    firstName: "Dora",
+    lastName: "Theexplorer",
+    phone: "90920930293",
+    photo:
+      "https://i.pinimg.com/564x/e5/e6/2f/e5e62f921ed456b9bd9b09fd8cfba222.jpg",
+    bio: "I like to travel",
+    role: "User",
+  },
 ];
 
 const bookings = [
   {
-    session: new Date("2023-08-25T15:00:00"),
+    session: new Date("2023-09-05T15:00:00"),
     status: "Confirmed",
     cancellation: "No refund after purchase",
     quantity: 1,
@@ -259,7 +287,7 @@ const bookings = [
     userId: "lily@gg.com",
   },
   {
-    session: new Date("2023-08-27T15:00:00"),
+    session: new Date("2023-08-29T14:00:00"),
     status: "Confirmed",
     cancellation: "No refund after purchase",
     quantity: 1,
@@ -267,14 +295,34 @@ const bookings = [
     userId: "angel@gg.com",
   },
   {
-    session: new Date("2023-08-26T17:00:00"),
+    session: new Date("2023-09-04T15:00:00"),
     status: "Confirmed",
     cancellation: "No refund after purchase",
     quantity: 1,
     workshopId: "12 Rue Lorem Ipsum",
     userId: "leia@gg.com",
   },
+  {
+    session: new Date("2023-09-06T15:00:00"),
+    status: "Confirmed",
+    cancellation: "No refund after purchase",
+    quantity: 1,
+    workshopId: "20 Rue Maillard",
+    userId: "nico@gg.com",
+  },
+  {
+    session: new Date("2023-09-09T15:00:00"),
+    status: "Confirmed",
+    cancellation: "No refund after purchase",
+    quantity: 1,
+    workshopId: "20 Rue Maillard",
+    userId: "dora@gg.com",
+  },
 ];
+
+bookings.forEach((booking) => {
+  booking.formattedSession = dateFormatter.format(booking.session);
+});
 
 async function seed() {
   try {
