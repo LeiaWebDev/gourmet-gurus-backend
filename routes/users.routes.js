@@ -7,19 +7,6 @@ const Booking = require("../models/Booking.model")
 
 
 // all routes are prefixed with /api
-
-
-// route to get all users, 
-router.get("/", async(req, res, next)=>{
-    console.log("View all the users")
-    try {
-        const allUsers = await User.find()
-        res.json(allUsers)
-    } catch (error) {
-        next(error)
-    }
-})
-
 // route to get all teachers
 
 router.get("/teachers", async(req, res, next)=>{
@@ -28,6 +15,18 @@ router.get("/teachers", async(req, res, next)=>{
         // const allTeachers = await User.find({role:"Teacher"})
         const allTeachers = await User.find({role: "Teacher"})
         res.json(allTeachers)
+    } catch (error) {
+        next(error)
+    }
+})
+
+
+// route to get all users, 
+router.get("/", async(req, res, next)=>{
+    console.log("View all the users")
+    try {
+        const allUsers = await User.find()
+        res.json(allUsers)
     } catch (error) {
         next(error)
     }
@@ -184,7 +183,7 @@ router.delete("/:userId", async(req, res, next)=>{
     } catch (error) {
         next(error)
     }
-})
+})  
 
 
 
