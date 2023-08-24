@@ -33,11 +33,11 @@ router.get("/:workshopId", async (req, res, next) => {
   router.get("/:workshopId/participants", async (req, res, next) => {
     try {
 
-      const workshopParticipants = await Booking.findById(req.params.workshopId)
+      const workshopParticipants = await Booking.find(req.params.workshopId)
       .populate("userId", {firstName:1, lastName: 1, _id:0})
       .sort({lastName:1})
 
-      if(!workshopParticipants){
+      if(workshopParticipants.length === 0){
         return res.status(404).json({message:"Participants not found"})
         }
 
