@@ -34,7 +34,7 @@ router.get("/", async(req, res, next)=>{
 
 
 // route to create a new user
-router.post('/new-user/:userId', async(req, res, next)=>{
+router.post('/new-user/', async(req, res, next)=>{
     try {
         const {firstName, lastName, email, password, phone, photo, bio, role} = req.body
         const createdUser = await User.create(req.body)
@@ -46,7 +46,7 @@ router.post('/new-user/:userId', async(req, res, next)=>{
 })
 
 // route to create a new teacher
-router.post('/new-teacher/:userId', async(req, res, next)=>{
+router.post('/new-teacher/', async(req, res, next)=>{
     try {
         // const {
         //     firstName,
