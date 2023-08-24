@@ -41,7 +41,7 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
-      enum: ["User", "Teacher"],
+      enum: ["User", "Teacher", "Admin"],
       default: "User",
     },
     // workshopId: {
