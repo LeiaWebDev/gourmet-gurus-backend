@@ -1,11 +1,14 @@
 const express = require("express");
 const Workshop = require("../models/Workshop.model");
-const Booking = require("../models/Booking.model")
+const Booking = require("../models/Booking.model");
 const router = express.Router();
-const {isAuthenticated, isAdmin, isTeacher} = require("../middleware/jwt.middleware")
+const {
+  isAuthenticated,
+  isAdmin,
+  isTeacher,
+} = require("../middleware/jwt.middleware");
 
-
-// Get all workshop sessions 
+// Get all workshop sessions
 
 router.get("/sessions", async (req, res, next) => {
   try {
@@ -17,11 +20,18 @@ router.get("/sessions", async (req, res, next) => {
 });
 
 //Create a session for a specific workshop
-
-router.post("/", isTeacher, async (req, res, next) => {
+//isTeacher
+router.post("/:workshopId/sessions/", isTeacher, async (req, res, next) => {
   try {
-    const createdWorkshopSession = await Workshop.create({sessionsAvailable: req.body.sessionsAvailable});
-    res.status(201).json(createdWorkshopSession);
+    const workshopId = req.params.workshopId;
+    const newSession = req.body.sessionsAvailable;
+    const foundWorkshop = await Workshop.findById(workshopId);
+    if (!foundWorkshop) {
+      return res.status(404).json({ message: "Workshop not found" });
+    }
+    foundWorkshop.sessionsAvailable.push(newSession);
+    await foundWorkshop.save();
+    res.status(201).json(foundWorkshop);
   } catch (error) {
     next(error);
   }
@@ -29,33 +39,28 @@ router.post("/", isTeacher, async (req, res, next) => {
 
 //  Delete a workshop session
 
-router.delete("/:workshopId/sessions/:sessionId", isTeacher, async (req, res, next) => {
+router.delete("/:workshopId/sessions/:sessionIndex", async (req, res, next) => {
   try {
-    const {workshopId, sessionId} = req.params
-    const workshop = await Workshop.findById(workshopId)
+    const { workshopId, sessionIndex } = req.params;
+    const workshop = await Workshop.findById(workshopId);
 
     if (!workshop) {
-      return res.status(404).json({message: 'Workshop not found'})
+      return res.status(404).json({ message: "Workshop not found" });
+    }
 
-      const sessionIndex = workshop.sessionsAvailable.findIndex((session) => 
-        session.toString() === sessionId
-    ) 
-    if (sessionIndex === -1) {
-      return res.status(404).json({message: 'Session not found'})
-
-    } 
+    if (sessionIndex < 0 || sessionIndex >= workshop.sessionsAvailable.length) {
+      return res.status(404).json({ message: "Invalid session index" });
+    }
     //remove the session from the sessionsAvailable array
-    workshop.sessionsAvailable.splice(sessionIndex, 1)
+    workshop.sessionsAvailable.splice(sessionIndex, 1);
 
     // save the updated workshop (??)
-    await workshop.save()
-    res.status(200).json({message: 'Session deleted successfully'})
-    }
+    await workshop.save();
+    res.status(200).json({ message: "Session deleted successfully" });
   } catch (error) {
     next(error);
   }
 });
-
 
 //GET ALL WORKSHOPS
 
@@ -81,24 +86,21 @@ router.get("/:workshopId", async (req, res, next) => {
 
 // teacher can get all participants for a specific workshop
 // router.get("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
-  router.get("/:workshopId/participants", isTeacher, async (req, res, next) => {
-    try {
+router.get("/:workshopId/participants", isTeacher, async (req, res, next) => {
+  try {
+    const workshopParticipants = await Booking.find(req.params.workshopId)
+      .populate("userId", { firstName: 1, lastName: 1, _id: 0 })
+      .sort({ lastName: 1 });
 
-      const workshopParticipants = await Booking.find(req.params.workshopId)
-      .populate("userId", {firstName:1, lastName: 1, _id:0})
-      .sort({lastName:1})
-
-      if(workshopParticipants.length === 0){
-        return res.status(404).json({message:"Participants not found"})
-        }
-
-      res.json(workshopParticipants);
-
-    } catch (error) {
-      next(error);
+    if (workshopParticipants.length === 0) {
+      return res.status(404).json({ message: "Participants not found" });
     }
-  });
 
+    res.json(workshopParticipants);
+  } catch (error) {
+    next(error);
+  }
+});
 
 //Create a workshop
 // router.post("/", isAuthenticated, isTeacher, async (req, res, next) => {
@@ -136,6 +138,5 @@ router.delete("/:workshopId", isTeacher, async (req, res, next) => {
     next(error);
   }
 });
-
 
 module.exports = router;

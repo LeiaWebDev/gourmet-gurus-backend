@@ -47,10 +47,7 @@ const workshopSchema = new Schema(
       type: String,
       required: [true, "location/address of the workshop is required"],
     },
-    // preRequisites: {
-    //   type: String,
-    //   default: "",
-    // },
+ 
     workshopMaterial: {
       type: String,
       default: "",
@@ -66,10 +63,6 @@ const workshopSchema = new Schema(
       required: [true, "teacher for this workshop is required."],
     },
     
-    // participantId: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: "User"
-    // },
     sessionsAvailable: {
       type: [Date],
       required: [true, "at least one session for this workshop is required."],
