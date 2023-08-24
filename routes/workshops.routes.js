@@ -4,6 +4,59 @@ const Booking = require("../models/Booking.model")
 const router = express.Router();
 const {isAuthenticated, isAdmin, isTeacher} = require("../middleware/jwt.middleware")
 
+
+// Get all workshop sessions 
+
+router.get("/sessions", async (req, res, next) => {
+  try {
+    const allWorkshopSessions = await Workshop.find(req.body.sessionsAvailable);
+    res.json(allWorkshopSessions);
+  } catch (error) {
+    next(error);
+  }
+});
+
+//Create a session for a specific workshop
+
+router.post("/", isTeacher, async (req, res, next) => {
+  try {
+    const createdWorkshopSession = await Workshop.create({sessionsAvailable: req.body.sessionsAvailable});
+    res.status(201).json(createdWorkshopSession);
+  } catch (error) {
+    next(error);
+  }
+});
+
+//  Delete a workshop session
+
+router.delete("/:workshopId/sessions/:sessionId", isTeacher, async (req, res, next) => {
+  try {
+    const {workshopId, sessionId} = req.params
+    const workshop = await Workshop.findById(workshopId)
+
+    if (!workshop) {
+      return res.status(404).json({message: 'Workshop not found'})
+
+      const sessionIndex = workshop.sessionsAvailable.findIndex((session) => 
+        session.toString() === sessionId
+    ) 
+    if (sessionIndex === -1) {
+      return res.status(404).json({message: 'Session not found'})
+
+    } 
+    //remove the session from the sessionsAvailable array
+    workshop.sessionsAvailable.splice(sessionIndex, 1)
+
+    // save the updated workshop (??)
+    await workshop.save()
+    res.status(200).json({message: 'Session deleted successfully'})
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+
 //GET ALL WORKSHOPS
 
 router.get("/", async (req, res, next) => {
