@@ -33,20 +33,9 @@ router.get("/teachers", async(req, res, next)=>{
     }
 })
 
-// route to get one user
-router.get("/:userId", async(req, res, next)=>{
-    
-    try {
-        const oneUser = await User.findById(req.params.userId)
-        res.json(oneUser)
-    } catch (error) {
-        next(error)
-    }
-})
-
 
 // route to create a new user
-router.post('/', async(req, res, next)=>{
+router.post('/new-user/:userId', async(req, res, next)=>{
     try {
         const {firstName, lastName, email, password, phone, photo, bio, role} = req.body
         const createdUser = await User.create(req.body)
@@ -57,22 +46,40 @@ router.post('/', async(req, res, next)=>{
 	}
 })
 
-
-// route for one user to update their profile
-router.put("/:userId", async(req, res, next)=>{
+// route to create a new teacher
+router.post('/new-teacher/:userId', async(req, res, next)=>{
     try {
-        const {firstName, lastName, email, password, phone, photo, bio, role} = req.body 
-        const id = req.params.userId
-        const createdUserDetails = await User.findByIdAndUpdate(id, req.body, {new: true})
-        res.json(createdUserDetails)
-    } catch (error) {
-        next(error)
-    }
+        // const {
+        //     firstName,
+        //     lastName, 
+        //     email, 
+        //     password, 
+        //     phone, 
+        //     photo, 
+        //     bio, 
+        //     role} = req.body
+
+        const createdTeacher = await User.create({
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            password: req.body.password,
+            phone: req.body.phone, 
+            photo: req.body.photo, 
+            bio: req.body.bio, 
+            role: "Teacher",
+        }
+
+        )
+        res.status(201).json(createdTeacher)
+
+	} catch (error) {
+		next(error);
+	}
 })
 
 
-
-
+// not working /////// cannot find Id of a teacher
 // route to get one teacher
 router.get("/teachers/:userId", async(req, res, next)=>{
     
@@ -88,9 +95,30 @@ router.get("/teachers/:userId", async(req, res, next)=>{
     }
 })
 
+// not working////////
+// update a teacher with specifid Id
+router.put("/teachers/:userId", async(req, res, next)=>{
+    
+    try {
+        const {firstName, lastName, email, password, phone, photo, bio, role} = req.body 
+        const id = req.params.userId
+        const updatedTeacher = await User.findByIdAndUpdate(id, req.body, {new: true})
+        // const updatedTeacher = await User.findByIdAndUpdate({_id: id, role: "Teacher"})
+        res.json(updatedTeacher)
 
+        if (!updatedTeacher){
+            return res.status(404).json({message: "Teacher not found"})
+        }
+        
+        res.sendStatus(204);
+        
+    } catch (error) {
+        next(error)
+    }
+})
 
-// delete a teacher with specifid Id
+//not working /////
+// delete a teacher with specifid Id 
 router.delete("/teachers/:userId", async(req, res, next)=>{
     const id = req.params.userId
     try {
@@ -102,6 +130,57 @@ router.delete("/teachers/:userId", async(req, res, next)=>{
         
         res.sendStatus(204);
         // res.json({message: `teacher ${id} was deleted`})
+    } catch (error) {
+        next(error)
+    }
+})
+
+
+
+
+
+
+
+
+
+// route to get one user
+router.get("/:userId", async(req, res, next)=>{
+    
+    try {
+        const oneUser = await User.findById(req.params.userId)
+        res.json(oneUser)
+    } catch (error) {
+        next(error)
+    }
+})
+
+
+
+
+
+// route for one user to update their profile
+router.put("/:userId", async(req, res, next)=>{
+    try {
+        const {firstName, lastName, email, password, phone, photo, bio, role} = req.body 
+        const id = req.params.userId
+        const createdUserDetails = await User.findByIdAndUpdate(id, req.body, {new: true})
+        res.json(createdUserDetails)
+    } catch (error) {
+        next(error)
+    }
+})
+
+
+// delete a user with specifid Id
+router.delete("/:userId", async(req, res, next)=>{
+    const id = req.params.userId
+    try {
+        const deletedUser = await User.findByIdAndDelete({id})
+        
+        if (!deletedUser){
+            return res.status(404).json({message: "User not found"})
+        }
+        res.sendStatus(204);
     } catch (error) {
         next(error)
     }
