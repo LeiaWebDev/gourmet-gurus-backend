@@ -27,7 +27,6 @@ router.get("/:workshopId", async (req, res, next) => {
   }
 });
 
-
 // teacher can get all participants for a specific workshop
 // router.get("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
   router.get("/:workshopId/participants", async (req, res, next) => {
