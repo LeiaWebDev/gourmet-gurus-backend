@@ -62,16 +62,16 @@ function isTeacher (req, res, next){
   }
 }
 
-// function isAdmin (req, res, next){
-//   if (req.user.role === "Admin"){
-//       next()
-//   } else{
-//       return res.status(401).json({message: "Unauthorized"})
-//   }
-// }
+function isAdmin (req, res, next){
+  if (req.user.role === "Admin"){
+      next()
+  } else{
+      return res.status(401).json({message: "Unauthorized"})
+  }
+}
 
 
 // Export the middleware so that we can use it to create protected routes
 module.exports = {
-  isAuthenticated, isTeacher
+  isAuthenticated, isTeacher, isAdmin
 };

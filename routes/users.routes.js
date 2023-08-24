@@ -78,24 +78,8 @@ router.post('/new-teacher/', async(req, res, next)=>{
 })
 
 
-// not working /////// cannot find Id of a teacher
-// route to get one teacher
-router.get("/teachers/:userId", async(req, res, next)=>{
-    
-    try {
-        const oneTeacher = await User.findById({_id: req.params.userId, role: "Teacher" })
-        
-        if(!teacher){
-            return res.status(404).json({message:"Teacher not found"})
-        }
-        res.json(oneTeacher)
-    } catch (error) {
-        next(error)
-    }
-})
 
-// not working////////
-// update a teacher with specifid Id
+// update a teacher with specifid Id, ok
 router.put("/teachers/:userId", async(req, res, next)=>{
     
     try {
@@ -116,8 +100,7 @@ router.put("/teachers/:userId", async(req, res, next)=>{
     }
 })
 
-//not working /////
-// delete a teacher with specifid Id 
+// delete a teacher with specifid Id , ok
 router.delete("/teachers/:userId", async(req, res, next)=>{
     const id = req.params.userId
     try {
@@ -126,9 +109,8 @@ router.delete("/teachers/:userId", async(req, res, next)=>{
         if (!deletedTeacher){
             return res.status(404).json({message: "Teacher not found"})
         }
+        res.json({message: `Teacher ${id} was deleted`});
         
-        res.sendStatus(204);
-        // res.json({message: `teacher ${id} was deleted`})
     } catch (error) {
         next(error)
     }
@@ -136,9 +118,21 @@ router.delete("/teachers/:userId", async(req, res, next)=>{
 
 
 
+// route to get one teacher, ok
+router.get("/teachers/:userId", async(req, res, next)=>{
+    
+    try {
+        const oneTeacher = await User.findById({_id: req.params.userId, role: "Teacher" })
+        console.log(oneTeacher)
 
-
-
+        if(!oneTeacher){
+            return res.status(404).json({message:"Teacher not found"})
+        }
+        res.json(oneTeacher)
+    } catch (error) {
+        next(error)
+    }
+})
 
 
 
@@ -152,9 +146,6 @@ router.get("/:userId", async(req, res, next)=>{
         next(error)
     }
 })
-
-
-
 
 
 // route for one user to update their profile
@@ -172,14 +163,16 @@ router.put("/:userId", async(req, res, next)=>{
 
 // delete a user with specifid Id
 router.delete("/:userId", async(req, res, next)=>{
-    const id = req.params.userId
+    
     try {
-        const deletedUser = await User.findByIdAndDelete({id})
+
+        const id = req.params.userId
+        const deletedUser = await User.findByIdAndDelete(id)
         
         if (!deletedUser){
             return res.status(404).json({message: "User not found"})
         }
-        res.sendStatus(204);
+        res.json({message: `User ${id} was deleted.`});
     } catch (error) {
         next(error)
     }

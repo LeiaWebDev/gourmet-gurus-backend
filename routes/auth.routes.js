@@ -51,14 +51,14 @@ router.post("/signup", async (req, res, next) => {
   // Check the users collection if a user with the same email already exists
     const existingUser = await User.findOne({email: email})
     // If the user with the same email already exists, send an error response
-    if (!existingUser){
+    if (existingUser){
       return res.status(400).json({ message: "Email already exists." });
     }
 
       // If email is unique, proceed to hash the password
       // Generate a new salt from the rounds
-      const salt = await bcrypt.genSaltSync(saltRounds);
-      const hashedPassword = await bcrypt.hashSync(password, salt);
+      const salt = await bcrypt.genSalt(saltRounds);
+      const hashedPassword = await bcrypt.hash(password, salt);
 
       // Create the new user in the database
       // We return a pending promise, which allows us to chain another `then`
@@ -72,13 +72,13 @@ router.post("/signup", async (req, res, next) => {
       // Deconstruct the newly created user object to omit the password
       // We should never expose passwords publicly
           email: newUser.email,
-          firstName : newUser.firstName,
-          lastName: newUser.lastName,
+          // firstName : newUser.firstName,
+          // lastName: newUser.lastName,
           _id: newUser._id,
-          role: newUser.role,
-          phone: newUser.phone,
-          photo: newUser.photo,
-          bio: newUser.bio,
+          // role: newUser.role,
+          // phone: newUser.phone,
+          // photo: newUser.photo,
+          // bio: newUser.bio,
           // Create a new object that doesn't expose the password
       }
       // Send a json response containing the user object
