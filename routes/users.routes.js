@@ -4,6 +4,7 @@ const router = express.Router();
 const User = require("../models/User.model")
 const Workshop = require("../models/Workshop.model")
 const Booking = require("../models/Booking.model")
+const {isAuthenticated, isAdmin, isTeacher} = require("../middleware/jwt.middleware")
 
 
 // all routes are prefixed with /api
@@ -80,7 +81,7 @@ router.post('/new-teacher/', async(req, res, next)=>{
 
 
 // update a teacher with specifid Id, ok
-router.put("/teachers/:userId", async(req, res, next)=>{
+router.put("/teachers/:userId", isTeacher, async(req, res, next)=>{
     
     try {
         const {firstName, lastName, email, password, phone, photo, bio, role} = req.body 
@@ -101,7 +102,7 @@ router.put("/teachers/:userId", async(req, res, next)=>{
 })
 
 // delete a teacher with specifid Id , ok
-router.delete("/teachers/:userId", async(req, res, next)=>{
+router.delete("/teachers/:userId", isAdmin, async(req, res, next)=>{
     const id = req.params.userId
     try {
         const deletedTeacher = await User.findByIdAndDelete({_id: id, role: "Teacher"})
@@ -149,7 +150,7 @@ router.get("/:userId", async(req, res, next)=>{
 
 
 // route for one user to update their profile
-router.put("/:userId", async(req, res, next)=>{
+router.put("/:userId", isAuthenticated, async(req, res, next)=>{
     try {
         const {firstName, lastName, email, password, phone, photo, bio, role} = req.body 
         const id = req.params.userId
@@ -162,7 +163,7 @@ router.put("/:userId", async(req, res, next)=>{
 
 
 // delete a user with specifid Id
-router.delete("/:userId", async(req, res, next)=>{
+router.delete("/:userId", isAdmin, async(req, res, next)=>{
     
     try {
 

@@ -5,7 +5,7 @@ const User = require("../models/User.model")
 const Workshop = require("../models/Workshop.model")
 const Booking = require("../models/Booking.model");
 const { route } = require("./auth.routes");
-
+const {isAuthenticated, isAdmin, isTeacher} = require("../middleware/jwt.middleware")
 
 
 // all routes are prefixed with /api

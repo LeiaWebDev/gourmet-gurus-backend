@@ -2,8 +2,7 @@ const express = require("express");
 const Workshop = require("../models/Workshop.model");
 const Booking = require("../models/Booking.model")
 const router = express.Router();
-const {isTeacher} = require("../middleware/jwt.middleware")
-const {isAuthenticated} = require("../middleware/jwt.middleware")
+const {isAuthenticated, isAdmin, isTeacher} = require("../middleware/jwt.middleware")
 
 //GET ALL WORKSHOPS
 
@@ -29,7 +28,7 @@ router.get("/:workshopId", async (req, res, next) => {
 
 // teacher can get all participants for a specific workshop
 // router.get("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
-  router.get("/:workshopId/participants", async (req, res, next) => {
+  router.get("/:workshopId/participants", isTeacher, async (req, res, next) => {
     try {
 
       const workshopParticipants = await Booking.find(req.params.workshopId)
@@ -50,7 +49,7 @@ router.get("/:workshopId", async (req, res, next) => {
 
 //Create a workshop
 // router.post("/", isAuthenticated, isTeacher, async (req, res, next) => {
-router.post("/", async (req, res, next) => {
+router.post("/", isTeacher, async (req, res, next) => {
   try {
     const createdWorkshop = await Workshop.create(req.body);
     res.status(201).json(createdWorkshop);
@@ -61,7 +60,7 @@ router.post("/", async (req, res, next) => {
 
 //UPDATE A WORKSHOP
 // router.put("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
-router.put("/:workshopId", async (req, res, next) => {
+router.put("/:workshopId", isTeacher, async (req, res, next) => {
   try {
     const updatedWorkshop = await Workshop.findByIdAndUpdate(
       req.params.workshopId,
@@ -76,7 +75,7 @@ router.put("/:workshopId", async (req, res, next) => {
 
 //DELETE A WORKSHOP
 // router.delete("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
-router.delete("/:workshopId", async (req, res, next) => {
+router.delete("/:workshopId", isTeacher, async (req, res, next) => {
   try {
     await Workshop.findByIdAndDelete(req.params.workshopId);
     res.sendStatus(204);
