@@ -10,10 +10,11 @@ async function isAuthenticated(req,res,next){
     if(!token){
       return res.status(401).json({message:" No token found"})
     }
-    token = token.replace("Bearer","")
+    token = token.replace("Bearer ","")
+    console.log(token)
     const validToken = jwt.verify(token, process.env.TOKEN_SECRET, {
       algorithms: ["HS256"],
-    })
+    });
     if (validToken){
       console.log(validToken)
       const loggedUser = await User.findOne({email: validToken.email})
