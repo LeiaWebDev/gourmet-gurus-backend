@@ -26,7 +26,7 @@ const userSchema = new Schema(
     },
     phone: {
       type: Number,
-      default: "your phone number"
+      // default: "your phone number"
       // required: [true, "phone is required."],
     },
     photo: {

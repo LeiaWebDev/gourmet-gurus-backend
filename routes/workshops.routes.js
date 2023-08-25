@@ -1,12 +1,9 @@
 const express = require("express");
 const Workshop = require("../models/Workshop.model");
-const Booking = require("../models/Booking.model");
+const Booking = require("../models/Booking.model")
 const router = express.Router();
-const {
-  isAuthenticated,
-  isAdmin,
-  isTeacher,
-} = require("../middleware/jwt.middleware");
+
+const {isAuthenticated, isAdmin, isTeacher} = require("../middleware/jwt.middleware")
 
 // Get all workshop sessions
 
@@ -39,7 +36,7 @@ router.post("/:workshopId/sessions/", isTeacher, async (req, res, next) => {
 
 //  Delete a workshop session
 
-router.delete("/:workshopId/sessions/:sessionIndex", async (req, res, next) => {
+router.delete("/:workshopId/sessions/:sessionIndex", isTeacher, async (req, res, next) => {
   try {
     const { workshopId, sessionIndex } = req.params;
     const workshop = await Workshop.findById(workshopId);
@@ -86,21 +83,24 @@ router.get("/:workshopId", async (req, res, next) => {
 
 // teacher can get all participants for a specific workshop
 // router.get("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
-router.get("/:workshopId/participants", isTeacher, async (req, res, next) => {
-  try {
-    const workshopParticipants = await Booking.find(req.params.workshopId)
-      .populate("userId", { firstName: 1, lastName: 1, _id: 0 })
-      .sort({ lastName: 1 });
+  router.get("/:workshopId/participants", isTeacher, async (req, res, next) => {
+    try {
 
-    if (workshopParticipants.length === 0) {
-      return res.status(404).json({ message: "Participants not found" });
+      const workshopParticipants = await Booking.find(req.params.workshopId)
+      .populate("userId", {firstName:1, lastName: 1, _id:0})
+      .sort({lastName:1})
+
+      if(workshopParticipants.length === 0){
+        return res.status(404).json({message:"Participants not found"})
+        }
+
+      res.json(workshopParticipants);
+
+    } catch (error) {
+      next(error);
     }
+  });
 
-    res.json(workshopParticipants);
-  } catch (error) {
-    next(error);
-  }
-});
 
 //Create a workshop
 // router.post("/", isAuthenticated, isTeacher, async (req, res, next) => {

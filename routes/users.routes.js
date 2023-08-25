@@ -35,20 +35,20 @@ router.get("/", async(req, res, next)=>{
 
 
 // route to create a new user
-router.post('/new-user/', async(req, res, next)=>{
-    try {
-        const {firstName, lastName, email, password, phone, photo, bio, role} = req.body
-        const createdUser = await User.create(req.body)
-        res.status(201).json(createdUser)
+// router.post('/new-user/', async(req, res, next)=>{
+//     try {
+//         const {firstName, lastName, email, password, phone, photo, bio, role} = req.body
+//         const createdUser = await User.create(req.body)
+//         res.status(201).json(createdUser)
 
-	} catch (error) {
-		next(error);
-	}
-})
+// 	} catch (error) {
+// 		next(error);
+// 	}
+// })
 
 // route to create a new teacher
-router.post('/new-teacher/', async(req, res, next)=>{
-    try {
+// router.post('/new-teacher/', async(req, res, next)=>{
+//     try {
         // const {
         //     firstName,
         //     lastName, 
@@ -59,24 +59,24 @@ router.post('/new-teacher/', async(req, res, next)=>{
         //     bio, 
         //     role} = req.body
 
-        const createdTeacher = await User.create({
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            email: req.body.email,
-            password: req.body.password,
-            phone: req.body.phone, 
-            photo: req.body.photo, 
-            bio: req.body.bio, 
-            role: "Teacher",
-        }
+//         const createdTeacher = await User.create({
+//             firstName: req.body.firstName,
+//             lastName: req.body.lastName,
+//             email: req.body.email,
+//             password: req.body.password,
+//             phone: req.body.phone, 
+//             photo: req.body.photo, 
+//             bio: req.body.bio, 
+//             role: "Teacher",
+//         }
 
-        )
-        res.status(201).json(createdTeacher)
+//         )
+//         res.status(201).json(createdTeacher)
 
-	} catch (error) {
-		next(error);
-	}
-})
+// 	} catch (error) {
+// 		next(error);
+// 	}
+// })
 
 
 
