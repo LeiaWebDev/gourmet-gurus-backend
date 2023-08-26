@@ -71,7 +71,7 @@ router.delete(
       }
       //remove the session from the sessionsAvailable array
       workshop.sessionsAvailable.splice(sessionIndex, 1);
-      
+
       // save the updated workshop (??)
       await workshop.save();
       res.status(200).json({ message: "Session deleted successfully" });
@@ -79,34 +79,34 @@ router.delete(
       next(error);
     }
   }
-  );
-  
-  //GET ALL WORKSHOPS
-  router.get("/", async (req, res, next) => {
-    try {
-      const allWorkShops = await Workshop.find();
-      res.json(allWorkShops);
-    } catch (error) {
-      next(error);
-    }
-  });
-  
-  // Get one workshop
-  // router.get("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
-  router.get("/:workshopId", async (req, res, next) => {
-    try {
-      const oneWorkshop = await Workshop.findById(req.params.workshopId);
-      res.json(oneWorkshop);
-    } catch (error) {
-      next(error);
-    }
-  });
-  
-  // teacher can get all participants for a specific workshop
-  // router.get("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
-    router.get("/:workshopId/participants", isTeacher, async (req, res, next) => {
-      try {
-        const workshopParticipants = await Booking.find(req.params.workshopId)
+);
+
+//GET ALL WORKSHOPS
+router.get("/", async (req, res, next) => {
+  try {
+    const allWorkShops = await Workshop.find();
+    res.json(allWorkShops);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Get one workshop
+// router.get("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
+router.get("/:workshopId", async (req, res, next) => {
+  try {
+    const oneWorkshop = await Workshop.findById(req.params.workshopId);
+    res.json(oneWorkshop);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// teacher can get all participants for a specific workshop
+// router.get("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
+router.get("/:workshopId/participants", isTeacher, async (req, res, next) => {
+  try {
+    const workshopParticipants = await Booking.find(req.params.workshopId)
       .populate("userId", { firstName: 1, lastName: 1, _id: 0 })
       .sort({ lastName: 1 });
 
