@@ -31,6 +31,17 @@ router.get("/sessions", async (req, res, next) => {
   }
 });
 
+// Get all created workshops of a teacher
+router.get("/workshops/teacher/:teacherId", async (req, res, next) => {
+  try {
+    const { teacherId } = req.params;
+    const workshops = await Workshop.find({ teacherId });
+    res.json(workshops);
+  } catch (error) {
+    next(error);
+  }
+});
+
 //Create a session for a specific workshop
 //isTeacher
 router.post("/:workshopId/sessions/", isTeacher, async (req, res, next) => {
