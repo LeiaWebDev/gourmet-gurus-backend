@@ -42,6 +42,8 @@ router.get("/workshops/teacher/:teacherId", async (req, res, next) => {
   }
 });
 
+
+
 //Create a session for a specific workshop
 //isTeacher
 router.post("/:workshopId/sessions/", isTeacher, async (req, res, next) => {
@@ -132,15 +134,39 @@ router.get("/:workshopId/participants", isTeacher, async (req, res, next) => {
 });
 
 //UPDATE A WORKSHOP
-// router.put("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
-router.put("/:workshopId", isTeacher, async (req, res, next) => {
+// router.put("/:workshopId", isTeacher, async (req, res, next) => {
+//   try {
+//     const updatedWorkshop = await Workshop.findByIdAndUpdate(
+//       req.params.workshopId,
+//       req.body,
+//       { new: true }
+//       );
+//       res.json(updatedWorkshop);
+//     } catch (error) {
+//       next(error);
+//     }
+//   });
+  
+  
+  // PUT /api/workshops/:workshopId - Update a workshop by its ID
+  // router.put("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
+router.put("/:workshopId", async (req, res, next) => {
   try {
+    const workshopId = req.params.workshopId;
+    const updatedData = req.body;
+
+    // Use the workshopId to find and update the workshop
     const updatedWorkshop = await Workshop.findByIdAndUpdate(
-      req.params.workshopId,
-      req.body,
-      { new: true }
+      workshopId,
+      updatedData,
+      { new: true } // Return the updated workshop
     );
-    res.json(updatedWorkshop);
+
+    if (!updatedWorkshop) {
+      return res.status(404).json({ message: "Workshop not found" });
+    }
+
+    res.status(200).json(updatedWorkshop);
   } catch (error) {
     next(error);
   }
