@@ -41,7 +41,7 @@ const workshopSchema = new Schema(
     },
     workshopPics: {
       type: [String],
-      required: [true, "at least one picture of the workshop is required"],
+      // required: [true, "at least one picture of the workshop is required"],
     },
     location: {
       type: String,
