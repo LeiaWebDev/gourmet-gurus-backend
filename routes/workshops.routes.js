@@ -142,10 +142,10 @@ router.post(
           .status(400)
           .json({ message: "Workshop not found or not owned by the teacher" });
       }
-      res.json(workshop);
+      // res.json(workshop);
       const newSession = req.body.newSession;
       workshop.sessionsAvailable.push(newSession);
-
+      await workshop.save()
       res.status(201).json(workshop);
     } catch (error) {
       next(error);
