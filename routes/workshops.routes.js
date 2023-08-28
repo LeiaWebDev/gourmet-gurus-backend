@@ -69,8 +69,8 @@ router.post("/:workshopId/sessions/", isTeacher, async (req, res, next) => {
 router.get("/:workshopId/sessions", async (req, res, next) => {
   try {
     const workshopId = req.params.workshopId;
-    const sessionsByWorkshopId = await Workshop.findById(workshopId).populate("sessionsAvailable");
-    res.json(allWorkshopSessions);
+    const sessionsByWorkshopId = await Workshop.findById(workshopId)
+    res.json(sessionsByWorkshopId);
   } catch (error) {
     next(error);
   }
