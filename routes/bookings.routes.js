@@ -12,6 +12,16 @@ const {isAuthenticated, isAdmin, isTeacher} = require("../middleware/jwt.middlew
 // all routes are prefixed with /api/bookings too
 
 
+router.post("/create", async(req, res, next)=>{
+    try {
+        const {session, status, cancellation, quantity, workshopId, userId} = req.body
+        const createdBooking = await Booking.create(req.body)
+        res.status(201).json(createdBooking)
+    } catch (error) {
+        next(error)
+    }
+})
+
 // route to get all bookings, 
 router.get("/", async(req, res, next)=>{
     console.log("View all bookings")
@@ -23,16 +33,6 @@ router.get("/", async(req, res, next)=>{
     }
 })
 
-// route to get one booking
-router.get("/:bookingId", async(req, res, next)=>{
-    
-    try {
-        const oneBooking = await Booking.findById(req.params.bookingId)
-        res.json(oneBooking)
-    } catch (error) {
-        next(error)
-    }
-})
 
 // route to get one booking with workshop details
 router.get("/:bookingId/bookingdetails", async(req, res, next)=>{
@@ -45,6 +45,7 @@ router.get("/:bookingId/bookingdetails", async(req, res, next)=>{
         const oneBookingDetails = await Booking.findById(booking)
         .populate("workshopId", {createdAt:0, updatedAt:0})
         .populate("userId", {createdAt:0, updatedAt:0})
+        
         res.json(oneBookingDetails)
 
     } catch (error) {
@@ -52,11 +53,12 @@ router.get("/:bookingId/bookingdetails", async(req, res, next)=>{
     }
 })
 
-router.post("/create", async(req, res, next)=>{
+// route to get one booking
+router.get("/:bookingId", async(req, res, next)=>{
+    
     try {
-        const {session, status, cancellation, quantity, workshopId, userId} = req.body
-        const createdBooking = await Booking.create(req.body)
-        res.status(201).json(createdBooking)
+        const oneBooking = await Booking.findById(req.params.bookingId)
+        res.json(oneBooking)
     } catch (error) {
         next(error)
     }
@@ -87,4 +89,17 @@ router.delete("/:bookingId", async(req, res, next)=>{
     }
 })
 
+
+
+// route to delete one workshop in the booking??????
+router.delete("/:bookingId/:workshopId", async(req, res, next)=>{
+    try {
+        const id = req.params.bookingId
+        const workshopId = req.params.workshopId
+        await Booking.findById(id).delete(workshopId)
+        res.sendStatus(204)
+    } catch (error) {
+        next(error)
+    }
+})
 module.exports = router;

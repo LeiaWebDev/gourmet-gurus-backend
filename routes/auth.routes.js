@@ -122,7 +122,7 @@ router.post("/login", async (req, res, next) => {
     const payload = {
       email: existingUser.email,
       _id: existingUser._id,
-      teacherId: existingUser.teacherId,
+      teacherId: teacherId,
     };
 
     // Create a JSON Web Token and sign it
