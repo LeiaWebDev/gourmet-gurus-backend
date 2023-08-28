@@ -20,6 +20,8 @@ router.post("/create-workshop", async (req, res, next) => {
   }
 });
 
+
+
 // Get all workshop sessions
 
 router.get("/sessions", async (req, res, next) => {
@@ -31,8 +33,9 @@ router.get("/sessions", async (req, res, next) => {
   }
 });
 
+
 // Get all created workshops of a teacher
-router.get("/workshops/teacher/:teacherId", async (req, res, next) => {
+router.get("/teacher/:teacherId", async (req, res, next) => {
   try {
     const { teacherId } = req.params;
     const workshops = await Workshop.find({ teacherId });
@@ -59,6 +62,21 @@ router.post("/:workshopId/sessions/", isTeacher, async (req, res, next) => {
     next(error);
   }
 });
+
+
+// Get all sessions per workshopId for this booking
+
+router.get("/:workshopId/sessions", async (req, res, next) => {
+  try {
+    const workshopId = req.params.workshopId;
+    const sessionsByWorkshopId = await Workshop.findById(workshopId).populate("sessionsAvailable");
+    res.json(allWorkshopSessions);
+  } catch (error) {
+    next(error);
+  }
+});
+
+
 
 //  Delete a workshop session
 
@@ -117,7 +135,8 @@ router.get("/:workshopId", async (req, res, next) => {
 // router.get("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
 router.get("/:workshopId/participants", isTeacher, async (req, res, next) => {
   try {
-    const workshopParticipants = await Booking.find(req.params.workshopId)
+    const workshopId = req.params.workshopId;
+    const workshopParticipants = await Booking.find({workshopId})
       .populate("userId", { firstName: 1, lastName: 1, _id: 0 })
       .sort({ lastName: 1 });
 
@@ -130,6 +149,20 @@ router.get("/:workshopId/participants", isTeacher, async (req, res, next) => {
     next(error);
   }
 });
+
+// get teacher details for a specific workshop
+//for one workshop page, get teacher details for a specific workshop
+router.get("/:workshopId/:teacherId", async (req,res,next)=>{
+  try {
+    const { teacherId, workshopId } = req.params;
+    const teacherDetails = await Workshop.findById(workshopId)
+    .populate("teacherId");
+    res.json(teacherDetails)
+  } catch (error) {
+    next(error)
+    
+  }
+})
 
 //UPDATE A WORKSHOP
 // router.put("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
