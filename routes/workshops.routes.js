@@ -11,20 +11,26 @@ const {
 
 //Create a workshop
 // router.post("/", isAuthenticated, isTeacher, async (req, res, next) => {
-router.post("/create-workshop", async (req, res, next) => {
-  try {
-    const createdWorkshop = await Workshop.create(req.body);
-    res.status(201).json(createdWorkshop);
-  } catch (error) {
-    next(error);
+router.post(
+  "/create-workshop",
+  isAuthenticated,
+  isTeacher,
+  async (req, res, next) => {
+    try {
+      const createdWorkshop = await Workshop.create({
+        ...req.body,
+        teacherId: req.user._id,
+      });
+      res.status(201).json(createdWorkshop);
+    } catch (error) {
+      next(error);
+    }
   }
-});
-
-
+);
 
 // Get all workshop sessions
 
-router.get("/sessions", async (req, res, next) => {
+router.get("/:workshopId/sessions", async (req, res, next) => {
   try {
     const allWorkshopSessions = await Workshop.find(req.body.sessionsAvailable);
     res.json(allWorkshopSessions);
@@ -32,7 +38,6 @@ router.get("/sessions", async (req, res, next) => {
     next(error);
   }
 });
-
 
 // Get all created workshops of a teacher
 router.get("/teacher/:teacherId", async (req, res, next) => {
@@ -63,20 +68,36 @@ router.post("/:workshopId/sessions/", isTeacher, async (req, res, next) => {
   }
 });
 
+router.get("/:workshopId/sessions?:sessionIndex");
 
 // Get all sessions per workshopId for this booking
 
+// router.get("/:workshopId/sessions", async (req, res, next) => {
+//   try {
+//     const workshopId = req.params.workshopId;
+//     const sessionsByWorkshopId = await Workshop.findById(workshopId).populate("sessionsAvailable");
+//     res.json(allWorkshopSessions);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
 router.get("/:workshopId/sessions", async (req, res, next) => {
   try {
-    const workshopId = req.params.workshopId;
-    const sessionsByWorkshopId = await Workshop.findById(workshopId).populate("sessionsAvailable");
-    res.json(allWorkshopSessions);
+    const { workshopId } = req.params;
+    const workshop = await Workshop.findById(workshopId);
+
+    if (!workshop) {
+      return res.status(404).json({ message: "Workshop not found" });
+    }
+
+    const sessions = workshop.sessionsAvailable;
+
+    res.status(200).json(sessions);
   } catch (error) {
     next(error);
   }
 });
-
-
 
 //  Delete a workshop session
 
@@ -136,7 +157,7 @@ router.get("/:workshopId", async (req, res, next) => {
 router.get("/:workshopId/participants", isTeacher, async (req, res, next) => {
   try {
     const workshopId = req.params.workshopId;
-    const workshopParticipants = await Booking.find({workshopId})
+    const workshopParticipants = await Booking.find({ workshopId })
       .populate("userId", { firstName: 1, lastName: 1, _id: 0 })
       .sort({ lastName: 1 });
 
@@ -152,17 +173,17 @@ router.get("/:workshopId/participants", isTeacher, async (req, res, next) => {
 
 // get teacher details for a specific workshop
 //for one workshop page, get teacher details for a specific workshop
-router.get("/:workshopId/:teacherId", async (req,res,next)=>{
+router.get("/:workshopId/:teacherId", async (req, res, next) => {
   try {
     const { teacherId, workshopId } = req.params;
-    const teacherDetails = await Workshop.findById(workshopId)
-    .populate("teacherId");
-    res.json(teacherDetails)
+    const teacherDetails = await Workshop.findById(workshopId).populate(
+      "teacherId"
+    );
+    res.json(teacherDetails);
   } catch (error) {
-    next(error)
-    
+    next(error);
   }
-})
+});
 
 //UPDATE A WORKSHOP
 // router.put("/:workshopId", isTeacher, async (req, res, next) => {
