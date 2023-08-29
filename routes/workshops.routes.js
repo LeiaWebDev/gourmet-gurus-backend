@@ -30,6 +30,7 @@ router.post(
 //Get one workshop by teacher
 
 router.get("/:teacherId/:workshopId", async (req, res, next) => {
+  console.log("teacherId-workshopId")
   try {
     const { workshopId, teacherId } = req.params;
 
@@ -53,6 +54,7 @@ router.get("/:teacherId/:workshopId", async (req, res, next) => {
 // Get all workshop sessions
 
 router.get("/:workshopId/sessions", async (req, res, next) => {
+  console.log("workshopId-sessions")
   try {
     const allWorkshopSessions = await Workshop.find(req.body.sessionsAvailable);
     res.json(allWorkshopSessions);
@@ -62,7 +64,8 @@ router.get("/:workshopId/sessions", async (req, res, next) => {
 });
 
 // Get all created workshops of a teacher
-router.get("/:teacherId", async (req, res, next) => {
+router.get("/teacher/:teacherId", async (req, res, next) => {
+  console.log("teacherId")
   try {
     const { teacherId } = req.params;
     const workshops = await Workshop.find({ teacherId });
@@ -75,6 +78,7 @@ router.get("/:teacherId", async (req, res, next) => {
 // PUT /api/workshops/:workshopId - Update a workshop by its ID
 // router.put("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
 router.put("/:teacherId/:workshopId", async (req, res, next) => {
+  
   try {
     const { workshopId, teacherId } = req.params;
     const updatedData = req.body;
@@ -256,6 +260,7 @@ router.get("/", async (req, res, next) => {
 // router.get("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
 router.get("/:workshopId", async (req, res, next) => {
   try {
+    console.log('first')
     const oneWorkshop = await Workshop.findById(req.params.workshopId);
     res.json(oneWorkshop);
   } catch (error) {
@@ -284,7 +289,7 @@ router.get("/:workshopId/participants", isTeacher, async (req, res, next) => {
 
 // get teacher details for a specific workshop
 //for one workshop page, get teacher details for a specific workshop
-router.get("/:workshopId/:teacherId", async (req, res, next) => {
+router.get("/:workshopId/teacher/:teacherId", async (req, res, next) => {
   try {
     const { teacherId, workshopId } = req.params;
     const teacherDetails = await Workshop.findById(workshopId).populate(

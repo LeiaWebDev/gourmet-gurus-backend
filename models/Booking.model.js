@@ -6,7 +6,7 @@ const bookingSchema = new Schema(
     session: {
       type: Date,
       required: [true, "Please choose a session."],
-      unique: true,
+      
     },
     status: {
       type: String,

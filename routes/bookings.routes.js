@@ -12,10 +12,11 @@ const {isAuthenticated, isAdmin, isTeacher} = require("../middleware/jwt.middlew
 // all routes are prefixed with /api/bookings too
 
 
-router.post("/create", async(req, res, next)=>{
+router.post("/create",isAuthenticated, async(req, res, next)=>{
     try {
-        const {session, status, cancellation, quantity, workshopId, userId} = req.body
-        const createdBooking = await Booking.create(req.body)
+        const {session, status, cancellation, quantity, workshopId} = req.body
+        const userId = req.user._id
+        const createdBooking = await Booking.create({session, status, cancellation, quantity, workshopId, userId})
         res.status(201).json(createdBooking)
     } catch (error) {
         next(error)
