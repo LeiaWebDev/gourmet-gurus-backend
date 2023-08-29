@@ -19,7 +19,8 @@ const bookingSchema = new Schema(
         "Free cancellation 48h before session date",
         "No refund after purchase",
       ],
-      required: [true, "cancellation policy is required."],
+      default: "Free cancellation 48h before session date",
+      
     },
     quantity: {
       type: Number,
