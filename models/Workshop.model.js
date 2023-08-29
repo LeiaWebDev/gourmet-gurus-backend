@@ -9,7 +9,7 @@ const workshopSchema = new Schema(
     },
     category: {
       type: [String],
-      enum: ["Cooking", "Bakery", "Patisserie"],
+      enum: ["Cooking", "Bakery", "Patisserie", "Baking"],
       required: [true, "Category is required"],
     },
     subCategory: {
@@ -28,7 +28,7 @@ const workshopSchema = new Schema(
       enum: ["1h", "2h", "3h"],
       required: [true, "duration is required"],
     },
-    
+
     maxParticipants: {
       type: Number,
       min: 2,
@@ -48,7 +48,7 @@ const workshopSchema = new Schema(
       type: String,
       required: [true, "location/address of the workshop is required"],
     },
- 
+
     workshopMaterial: {
       type: String,
       default: "",
@@ -63,7 +63,7 @@ const workshopSchema = new Schema(
       ref: "User",
       required: [true, "teacher for this workshop is required."],
     },
-    
+
     sessionsAvailable: {
       type: [Date],
       required: [true, "at least one session for this workshop is required."],

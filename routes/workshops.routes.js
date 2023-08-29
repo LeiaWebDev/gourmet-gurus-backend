@@ -2,7 +2,7 @@ const express = require("express");
 const Workshop = require("../models/Workshop.model");
 const Booking = require("../models/Booking.model");
 const router = express.Router();
-
+const uploader = require("./../config/cloudinary.config");
 const {
   isAuthenticated,
   isAdmin,
@@ -15,11 +15,16 @@ router.post(
   "/create-workshop",
   isAuthenticated,
   isTeacher,
+  uploader.single("workshopPics"),
   async (req, res, next) => {
     try {
+      console.log(req.body);
+      console.log(req.files, req.file);
+      const file = req.file.path || "";
       const createdWorkshop = await Workshop.create({
         ...req.body,
         teacherId: req.user._id,
+        workshopPics: [file],
       });
       res.status(201).json(createdWorkshop);
     } catch (error) {
@@ -27,10 +32,21 @@ router.post(
     }
   }
 );
+// Get all created workshops of a teacher
+router.get("/teacher/:teacherId", async (req, res, next) => {
+  console.log("teacherId");
+  try {
+    const { teacherId } = req.params;
+    const workshops = await Workshop.find({ teacherId });
+    res.json(workshops);
+  } catch (error) {
+    next(error);
+  }
+});
 //Get one workshop by teacher
 
 router.get("/:teacherId/:workshopId", async (req, res, next) => {
-  console.log("teacherId-workshopId")
+  console.log("teacherId-workshopId");
   try {
     const { workshopId, teacherId } = req.params;
 
@@ -54,7 +70,7 @@ router.get("/:teacherId/:workshopId", async (req, res, next) => {
 // Get all workshop sessions
 
 router.get("/:workshopId/sessions", async (req, res, next) => {
-  console.log("workshopId-sessions")
+  console.log("workshopId-sessions");
   try {
     const allWorkshopSessions = await Workshop.find(req.body.sessionsAvailable);
     res.json(allWorkshopSessions);
@@ -63,22 +79,9 @@ router.get("/:workshopId/sessions", async (req, res, next) => {
   }
 });
 
-// Get all created workshops of a teacher
-router.get("/teacher/:teacherId", async (req, res, next) => {
-  console.log("teacherId")
-  try {
-    const { teacherId } = req.params;
-    const workshops = await Workshop.find({ teacherId });
-    res.json(workshops);
-  } catch (error) {
-    next(error);
-  }
-});
-
 // PUT /api/workshops/:workshopId - Update a workshop by its ID
 // router.put("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
 router.put("/:teacherId/:workshopId", async (req, res, next) => {
-  
   try {
     const { workshopId, teacherId } = req.params;
     const updatedData = req.body;
@@ -149,7 +152,7 @@ router.post(
       // res.json(workshop);
       const newSession = req.body.sessionsAvailable;
       workshop.sessionsAvailable.push(newSession);
-      await workshop.save()
+      await workshop.save();
       res.status(201).json(workshop);
     } catch (error) {
       next(error);
@@ -214,8 +217,6 @@ router.get(
 //   }
 // });
 
-
-
 //  DELETE a workshop session
 
 router.delete(
@@ -262,7 +263,7 @@ router.get("/", async (req, res, next) => {
 // router.get("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
 router.get("/:workshopId", async (req, res, next) => {
   try {
-    console.log('first')
+    console.log("first");
     const oneWorkshop = await Workshop.findById(req.params.workshopId);
     res.json(oneWorkshop);
   } catch (error) {
