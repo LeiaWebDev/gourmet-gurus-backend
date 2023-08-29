@@ -129,7 +129,7 @@ router.delete("/:teacherId/:workshopId", async (req, res, next) => {
 //isTeacher
 router.post(
   "/:teacherId/:workshopId/sessions/",
-  isTeacher,
+  // isTeacher,
   async (req, res, next) => {
     try {
       const { workshopId, teacherId } = req.params;
@@ -143,7 +143,7 @@ router.post(
           .json({ message: "Workshop not found or not owned by the teacher" });
       }
       // res.json(workshop);
-      const newSession = req.body.newSession;
+      const newSession = req.body.sessionsAvailable;
       workshop.sessionsAvailable.push(newSession);
       await workshop.save()
       res.status(201).json(workshop);
@@ -210,11 +210,13 @@ router.get(
 //   }
 // });
 
-//  Delete a workshop session
+
+
+//  DELETE a workshop session
 
 router.delete(
   "/:workshopId/sessions/:sessionIndex",
-  isTeacher,
+  // isTeacher,
   async (req, res, next) => {
     try {
       const { workshopId, sessionIndex } = req.params;

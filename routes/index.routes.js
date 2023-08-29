@@ -4,6 +4,7 @@ const User = require("./../models/User.model");
 const Workshop = require("../models/Workshop.model");
 const { isAuthenticated, isAdmin } = require("../middleware/jwt.middleware")
 
+
 // All our routes are prefixed with /api
 
 router.use("/auth", require("./auth.routes"));

@@ -14,6 +14,9 @@ const User = require("../models/User.model");
 // const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 
+//cloudinary uploader
+const uploader = require("./../config/cloudinary.config");
+
 // How many rounds should bcrypt run the salt (default - 10 rounds)
 const saltRounds = 10;
 // const rounds = 12
@@ -115,7 +118,7 @@ router.post("/login", async (req, res, next) => {
       return res.status(400).json({ message: "Wrong credentials" });
     }
 
-    const teacherId = existingUser.role === "teacher" ? existingUser._id : null
+    const teacherId = existingUser.role === "teacher" ? existingUser._id : null;
 
     // generate the token
     // Create an object that will be set as the token payload
