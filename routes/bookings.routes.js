@@ -5,7 +5,7 @@ const User = require("../models/User.model")
 const Workshop = require("../models/Workshop.model")
 const Booking = require("../models/Booking.model");
 const { route } = require("./auth.routes");
-const {isAuthenticated, isAdmin, isTeacher} = require("../middleware/jwt.middleware")
+const {isAuthenticated, isAdmin} = require("../middleware/jwt.middleware")
 
 
 // all routes are prefixed with /api
@@ -34,6 +34,15 @@ router.get("/", async(req, res, next)=>{
     }
 })
 
+// get the last booking done and pending by a userId
+router.get('/last',isAuthenticated, async (req, res, next) => {
+    try {
+        const lastBooking = await Booking.findOne({userId: req.user._id}).populate('workshopId').sort({createdAt: -1})
+        res.json(lastBooking)
+    } catch (error) {
+        next(error)
+    }
+})
 
 // route to get one booking with workshop details
 router.get("/:bookingId/bookingdetails", async(req, res, next)=>{
@@ -55,7 +64,7 @@ router.get("/:bookingId/bookingdetails", async(req, res, next)=>{
 
 
 // route to update booking status confirmed specific booking by Id
-router.put("/confirmed/:bookingId", async(req, res, next)=>{
+router.put("/confirmed/:bookingId", isAuthenticated, async(req, res, next)=>{
     const {session, status, cancellation, quantity, workshopId, userId} = req.body
     const id = req.params.bookingId
     try {
