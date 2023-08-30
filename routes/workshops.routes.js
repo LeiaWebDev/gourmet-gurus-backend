@@ -81,7 +81,8 @@ router.get("/:workshopId/sessions", async (req, res, next) => {
 
 // PUT /api/workshops/:workshopId - Update a workshop by its ID
 // router.put("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
-router.put("/:teacherId/:workshopId", async (req, res, next) => {
+router.put("/:teacherId/:workshopId", isAuthenticated, uploader.single("workshopPics"), async (req, res, next) => {
+  
   try {
     const { workshopId, teacherId } = req.params;
     const updatedData = req.body;
