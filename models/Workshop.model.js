@@ -25,7 +25,7 @@ const workshopSchema = new Schema(
     },
     duration: {
       type: String,
-      enum: ["1h", "2h", "3h"],
+      enum: ["1 hour", "2 hours", "2.5 hours", "3 hours"],
       required: [true, "duration is required"],
     },
 
@@ -42,7 +42,7 @@ const workshopSchema = new Schema(
     workshopPics: {
       type: [String],
       default: "",
-      // required: [true, "at least one picture of the workshop is required"],
+      required: [true, "at least one picture of the workshop is required"],
     },
     location: {
       type: String,

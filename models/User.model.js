@@ -16,12 +16,12 @@ const userSchema = new Schema(
     },
     firstName: {
       type: String,
-      default: "your first name"
+      default: "your first name",
       // required: [true, "firstName is required."],
     },
     lastName: {
       type: String,
-      default: "your last name"
+      default: "your last name",
       // required: [true, "lastName is required."],
     },
     phone: {
@@ -30,14 +30,13 @@ const userSchema = new Schema(
       // required: [true, "phone is required."],
     },
     photo: {
-      type: String,
-      default: "photo URL"
+      type: [String],
+      default: "photo URL",
       // required: [true, "photo is required."],
     },
     bio: {
       type: String,
       default: "none",
-      
     },
     role: {
       type: String,
@@ -56,9 +55,6 @@ const userSchema = new Schema(
     //   type: [String],
     //   ref: "Favorites"
     // },
-    
-    
-
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`

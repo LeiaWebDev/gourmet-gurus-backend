@@ -147,6 +147,17 @@ router.get("/:userId", async (req, res, next) => {
   }
 });
 
+// GET A USER PROFILE
+router.get("/:userId/profile", async (req, res, next) => {
+  try {
+    const id = req.params.userId;
+    const userProfile = await User.findById(id);
+    res.json(userProfile);
+    res.status(200).json(userProfile);
+  } catch (error) {
+    next(error);
+  }
+});
 // route for one user to update their profile
 router.put(
   "/:userId/update-profile",
@@ -154,11 +165,19 @@ router.put(
   uploader.single("photo"),
   async (req, res, next) => {
     try {
-      const { firstName, lastName, phone, photo, bio, role } = req.body;
+      const { firstName, lastName, phone, bio, role } = req.body;
+      let photo;
+      if (req.file) {
+        photo = req.file.path;
+      }
       const id = req.params.userId;
-      const updatedProfile = await User.findByIdAndUpdate(id, req.body, {
-        new: true,
-      });
+      const updatedProfile = await User.findByIdAndUpdate(
+        id,
+        { firstName, lastName, phone, bio, role, photo },
+        {
+          new: true,
+        }
+      );
       res.json(updatedProfile);
       res.status(200).json(updatedProfile);
     } catch (error) {
