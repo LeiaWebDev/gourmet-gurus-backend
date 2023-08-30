@@ -53,6 +53,21 @@ router.get("/:bookingId/bookingdetails", async(req, res, next)=>{
     }
 })
 
+
+// route to update booking status confirmed specific booking by Id
+router.put("/confirmed/:bookingId", async(req, res, next)=>{
+    const {session, status, cancellation, quantity, workshopId, userId} = req.body
+    const id = req.params.bookingId
+    try {
+        
+        let updatedBooking = await Booking.findByIdAndUpdate(id, {status:"Confirmed"}, {new:true})
+        res.json(updatedBooking)
+
+    } catch (error) {
+        next(error);
+    }
+})
+
 // route to get one booking
 router.get("/:bookingId", async(req, res, next)=>{
     
