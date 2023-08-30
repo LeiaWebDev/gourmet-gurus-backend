@@ -15,16 +15,20 @@ router.post(
   "/create-workshop",
   isAuthenticated,
   isTeacher,
-  uploader.single("workshopPics"),
+  uploader.any("workshopPics"),
   async (req, res, next) => {
     try {
       console.log(req.body);
       console.log(req.files, req.file);
-      const file = req.file.path || "";
+
+      let workshopPics = [];
+      for (const file of req.files) {
+        workshopPics.push(file.path);
+      }
       const createdWorkshop = await Workshop.create({
         ...req.body,
         teacherId: req.user._id,
-        workshopPics: [file],
+        workshopPics,
       });
       res.status(201).json(createdWorkshop);
     } catch (error) {
@@ -81,34 +85,38 @@ router.get("/:workshopId/sessions", async (req, res, next) => {
 
 // PUT /api/workshops/:workshopId - Update a workshop by its ID
 // router.put("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
-router.put("/:teacherId/:workshopId", isAuthenticated, uploader.single("workshopPics"), async (req, res, next) => {
-  
-  try {
-    const { workshopId, teacherId } = req.params;
-    const updatedData = req.body;
+router.put(
+  "/:teacherId/:workshopId",
+  isAuthenticated,
+  uploader.single("workshopPics"),
+  async (req, res, next) => {
+    try {
+      const { workshopId, teacherId } = req.params;
+      const updatedData = req.body;
 
-    // const updatedWorkshop = await Workshop.findOne({
-    //   teacherId: teacherId,
-    //   _id: workshopId,
-    // });
+      // const updatedWorkshop = await Workshop.findOne({
+      //   teacherId: teacherId,
+      //   _id: workshopId,
+      // });
 
-    // Use the workshopId to find and update the workshop
-    const updatedWorkshop = await Workshop.findByIdAndUpdate(
-      workshopId,
-      updatedData,
-      { new: true } // Return the updated workshop
-    );
+      // Use the workshopId to find and update the workshop
+      const updatedWorkshop = await Workshop.findByIdAndUpdate(
+        workshopId,
+        updatedData,
+        { new: true } // Return the updated workshop
+      );
 
-    if (!updatedWorkshop) {
-      return res.status(400).json({ message: "Workshop not found" });
+      if (!updatedWorkshop) {
+        return res.status(400).json({ message: "Workshop not found" });
+      }
+      res.json(updatedWorkshop);
+
+      res.status(200).json(updatedWorkshop);
+    } catch (error) {
+      next(error);
     }
-    res.json(updatedWorkshop);
-
-    res.status(200).json(updatedWorkshop);
-  } catch (error) {
-    next(error);
   }
-});
+);
 
 //Find and Delete a workshop of a specific teacher
 
