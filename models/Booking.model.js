@@ -1,6 +1,6 @@
 const { Schema, model, SchemaType } = require("mongoose");
 
-// TODO: Please make sure you edit the User model to whatever makes sense in this case
+
 const bookingSchema = new Schema(
   {
     session: {
