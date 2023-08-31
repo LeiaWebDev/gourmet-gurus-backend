@@ -12,8 +12,6 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
   timeStyle: "short",
 });
 
-
-
 const workshops = [
   {
     title: "Traditional Japanese Ramen",
@@ -32,7 +30,7 @@ const workshops = [
     location: "3 Rue Maillard",
     workshopMaterial: "Chopsticks & Spoons",
     price: 20,
-    teacherId: "helen@gg.com",
+    teacherId: "coco@gg.com",
     sessionsAvailable: new Date("2023-08-29"),
   },
   {
@@ -116,7 +114,7 @@ const workshops = [
     title: "Fresh Italian Pasta from scratch",
     category: "Cooking",
     subCategory: "Italian Cuisine",
-    duration: "2 hours",
+    duration: "2h",
     maxParticipants: 5,
     description: "Learn from the master of pasta",
     workshopPics: [
@@ -133,7 +131,7 @@ const workshops = [
     title: "Chocalate creation",
     category: "Patisserie",
     subCategory: "French Cuisine",
-    duration: "2 hours",
+    duration: "2h",
     maxParticipants: 5,
     description: "Great for chocolate lovers!",
     workshopPics: [
