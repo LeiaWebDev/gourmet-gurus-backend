@@ -19,7 +19,7 @@ const workshops = [
     title: "Traditional Japanese Ramen",
     category: "Cooking",
     subCategory: "Japanese Cuisine",
-    duration: "1h",
+    duration: "1 hour",
     maxParticipants: 5,
     description:
       "Discover the fresh ingredients and learn the step by step creation of an authentic delicious ramen",
@@ -39,7 +39,7 @@ const workshops = [
     title: "French Macarons",
     category: "Patisserie",
     subCategory: "French Cuisine",
-    duration: "1h",
+    duration: "1 hour",
     maxParticipants: 5,
     description: "Engage in a fun macaron class.",
     workshopPics: [
@@ -58,7 +58,7 @@ const workshops = [
     title: "Pizza",
     category: "Cooking",
     subCategory: "Italian Cuisine",
-    duration: "1h",
+    duration: "1 hour",
     maxParticipants: 5,
     description: "Authentic Italian Pizza Making",
     workshopPics: [
@@ -77,7 +77,7 @@ const workshops = [
     title: "Gyoza from scratch",
     category: "Cooking",
     subCategory: "Japanese Cuisine",
-    duration: "1h",
+    duration: "1 hour",
     maxParticipants: 5,
     description: "Authentic Delicious Gyoza Making",
     workshopPics: [
@@ -96,7 +96,7 @@ const workshops = [
     title: "Making some Colorful and delicious Mochi",
     category: "Patisserie",
     subCategory: "Japanese Cuisine",
-    duration: "1h",
+    duration: "1 hour",
     maxParticipants: 10,
     description: "You will fall inlove with Mochis",
     workshopPics: [
@@ -116,7 +116,7 @@ const workshops = [
     title: "Fresh Italian Pasta from scratch",
     category: "Cooking",
     subCategory: "Italian Cuisine",
-    duration: "2h",
+    duration: "2 hours",
     maxParticipants: 5,
     description: "Learn from the master of pasta",
     workshopPics: [
@@ -133,7 +133,7 @@ const workshops = [
     title: "Chocalate creation",
     category: "Patisserie",
     subCategory: "French Cuisine",
-    duration: "2h",
+    duration: "2 hours",
     maxParticipants: 5,
     description: "Great for chocolate lovers!",
     workshopPics: [
