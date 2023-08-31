@@ -153,7 +153,7 @@ router.get("/:userId/profile", async (req, res, next) => {
     const id = req.params.userId;
     const userProfile = await User.findById(id);
     res.json(userProfile);
-    res.status(200).json(userProfile);
+    // res.status(200).json(userProfile);
   } catch (error) {
     next(error);
   }
