@@ -10,7 +10,7 @@ const {
 } = require("../middleware/jwt.middleware");
 
 //Create a workshop
-// router.post("/", isAuthenticated, isTeacher, async (req, res, next) => {
+
 router.post(
   "/create-workshop",
   isAuthenticated,
@@ -88,16 +88,12 @@ router.get("/:workshopId/sessions", async (req, res, next) => {
 router.put(
   "/:teacherId/:workshopId",
   isAuthenticated,
+  isTeacher,
   uploader.single("workshopPics"),
   async (req, res, next) => {
     try {
       const { workshopId, teacherId } = req.params;
       const updatedData = req.body;
-
-      // const updatedWorkshop = await Workshop.findOne({
-      //   teacherId: teacherId,
-      //   _id: workshopId,
-      // });
 
       // Use the workshopId to find and update the workshop
       const updatedWorkshop = await Workshop.findByIdAndUpdate(
@@ -158,7 +154,7 @@ router.post(
           .status(400)
           .json({ message: "Workshop not found or not owned by the teacher" });
       }
-      // res.json(workshop);
+
       const newSession = req.body.sessionsAvailable;
       workshop.sessionsAvailable.push(newSession);
       await workshop.save();
@@ -168,20 +164,6 @@ router.post(
     }
   }
 );
-
-// router.get("/:workshopId/sessions?:sessionIndex");
-
-// Get all sessions per workshopId for this booking
-
-// router.get("/:workshopId/sessions", async (req, res, next) => {
-//   try {
-//     const workshopId = req.params.workshopId;
-//     const sessionsByWorkshopId = await Workshop.findById(workshopId).populate("sessionsAvailable");
-//     res.json(allWorkshopSessions);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
 
 // RETRIEVE ALL EXISTING SESSIONS OF A TEACHER'S WORKSHOP
 router.get(
@@ -208,23 +190,6 @@ router.get(
     }
   }
 );
-
-// router.get("/:workshopId/sessions", async (req, res, next) => {
-//   try {
-//     const { workshopId } = req.params;
-//     const workshop = await Workshop.findById(workshopId);
-
-//     if (!workshop) {
-//       return res.status(404).json({ message: "Workshop not found" });
-//     }
-
-//     const sessions = workshop.sessionsAvailable;
-
-//     res.status(200).json(sessions);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
 
 //  DELETE a workshop session
 
@@ -281,23 +246,28 @@ router.get("/:workshopId", async (req, res, next) => {
 });
 
 // teacher can get all participants for a specific workshop
-// router.get("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
-router.get("/:workshopId/participants", isTeacher, async (req, res, next) => {
-  try {
-    const workshopId = req.params.workshopId;
-    const workshopParticipants = await Booking.find({ workshopId })
-      .populate("userId", { firstName: 1, lastName: 1, _id: 0 })
-      .sort({ lastName: 1 });
 
-    if (workshopParticipants.length === 0) {
-      return res.status(404).json({ message: "Participants not found" });
+router.get(
+  "/:workshopId/participants",
+  isAuthenticated,
+  isTeacher,
+  async (req, res, next) => {
+    try {
+      const workshopId = req.params.workshopId;
+      const workshopParticipants = await Booking.find({ workshopId })
+        .populate("userId", { firstName: 1, lastName: 1, _id: 0 })
+        .sort({ lastName: 1 });
+
+      if (workshopParticipants.length === 0) {
+        return res.status(404).json({ message: "Participants not found" });
+      }
+
+      res.json(workshopParticipants);
+    } catch (error) {
+      next(error);
     }
-
-    res.json(workshopParticipants);
-  } catch (error) {
-    next(error);
   }
-});
+);
 
 // get teacher details for a specific workshop
 //for one workshop page, get teacher details for a specific workshop
@@ -312,20 +282,6 @@ router.get("/:workshopId/teacher/:teacherId", async (req, res, next) => {
     next(error);
   }
 });
-
-//UPDATE A WORKSHOP
-// router.put("/:workshopId", isTeacher, async (req, res, next) => {
-//   try {
-//     const updatedWorkshop = await Workshop.findByIdAndUpdate(
-//       req.params.workshopId,
-//       req.body,
-//       { new: true }
-//       );
-//       res.json(updatedWorkshop);
-//     } catch (error) {
-//       next(error);
-//     }
-//   });
 
 //DELETE A WORKSHOP
 // router.delete("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
