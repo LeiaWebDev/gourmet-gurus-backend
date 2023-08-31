@@ -226,6 +226,7 @@ router.delete(
 //GET ALL WORKSHOPS
 router.get("/", async (req, res, next) => {
   try {
+    console.log('all workshops')
     const allWorkShops = await Workshop.find();
     res.json(allWorkShops);
   } catch (error) {
