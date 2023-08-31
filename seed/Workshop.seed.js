@@ -114,8 +114,8 @@ const workshops = [
     title: "Fresh Italian Pasta from scratch",
     category: "Cooking",
     subCategory: "Italian Cuisine",
-    duration: "2 hours",
-    maxParticipants: 10,
+    duration: "2h",
+    maxParticipants: 5,
     description: "Learn from the master of pasta",
     workshopPics: [
       "https://www.pinterest.fr/pin/711428072410771235/",
@@ -131,8 +131,8 @@ const workshops = [
     title: "Chocalate creation",
     category: "Patisserie",
     subCategory: "French Cuisine",
-    duration: "2 hours",
-    maxParticipants: 10,
+    duration: "2h",
+    maxParticipants: 5,
     description: "Great for chocolate lovers!",
     workshopPics: [
       "https://i.pinimg.com/736x/1d/c0/77/1dc07707776cc01c368ae1531fb6ce7e.jpg",
