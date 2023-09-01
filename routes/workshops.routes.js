@@ -116,7 +116,7 @@ router.put(
 
 //Find and Delete a workshop of a specific teacher
 
-router.delete("/:teacherId/:workshopId", isTeacher, async (req, res, next) => {
+router.delete("/:teacherId/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
   try {
     const { workshopId, teacherId } = req.params;
     const workshop = await Workshop.findOne({
@@ -140,7 +140,7 @@ router.delete("/:teacherId/:workshopId", isTeacher, async (req, res, next) => {
 //Create a session for a specific workshop
 
 router.post(
-  "/:teacherId/:workshopId/sessions/", isTeacher,
+  "/:teacherId/:workshopId/sessions/", isAuthenticated, isTeacher,
   async (req, res, next) => {
     try {
       const { workshopId, teacherId } = req.params;
@@ -193,7 +193,7 @@ router.get(
 //  DELETE a workshop session
 
 router.delete(
-  "/:workshopId/sessions/:sessionIndex", isTeacher,
+  "/:workshopId/sessions/:sessionIndex", isAuthenticated, isTeacher,
   async (req, res, next) => {
     try {
       const { workshopId, sessionIndex } = req.params;
@@ -284,7 +284,7 @@ router.get("/:workshopId/teacher/:teacherId", async (req, res, next) => {
 
 //DELETE A WORKSHOP
 
-router.delete("/:workshopId", isTeacher, async (req, res, next) => {
+router.delete("/:workshopId", isAuthenticated, isTeacher, async (req, res, next) => {
   try {
     await Workshop.findByIdAndDelete(req.params.workshopId);
     res.sendStatus(204);
